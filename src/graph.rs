@@ -1,3 +1,4 @@
+use crate::prelude::*;
 use fixedbitset::FixedBitSet;
 
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
@@ -37,8 +38,6 @@ pub struct Graph<N, E> {
     edges: generational_arena::Arena<Edge<N, E>>,
 }
 
-
-
 impl<N, E> Graph<N, E> {
     pub fn new() -> Self {
         Self {
@@ -60,6 +59,15 @@ impl<N, E> Graph<N, E> {
         // node_idx
         // todo!()
         self.nodes.typed_insert(node)
+    }
+
+    pub fn edges_incoming(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
+        let node = &self[node];
+        Edges::new(Direction::Incoming, node.next, &self.edges)
+    }
+
+    pub fn edges_outgoing(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
+        todo!()
     }
 
     pub fn node_count(&self) -> usize {

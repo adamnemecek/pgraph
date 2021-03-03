@@ -1,8 +1,9 @@
 pub use crate::{
     Direction,
-    Graph,
+    Edge,
+    EdgeIndex,
     Edges,
+    Graph,
     Node,
     NodeIndex,
-    EdgeIndex,
 };
