@@ -6,3 +6,6 @@ pub use graph::*;
 
 mod traversal;
 pub use traversal::*;
+
+mod visit;
+pub use visit::*;
