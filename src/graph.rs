@@ -1,5 +1,5 @@
-pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
+pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
 /// The graph's edge type.
 // #[derive(Debug)]
