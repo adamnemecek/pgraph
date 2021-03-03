@@ -1,3 +1,5 @@
+use fixedbitset::FixedBitSet;
+
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
@@ -56,6 +58,23 @@ impl<N, E> Graph<N, E> {
         // node_idx
         // todo!()
         self.nodes.typed_insert(node)
+    }
+
+    pub fn node_count(&self) -> usize {
+        self.nodes.len()
+    }
+
+    pub fn edge_count(&self) -> usize {
+        self.edges.len()
+    }
+
+    pub fn visit_map(&self) -> fixedbitset::FixedBitSet {
+        fixedbitset::FixedBitSet::with_capacity(self.node_count())
+    }
+
+    pub fn reset_map(&self, map: &mut fixedbitset::FixedBitSet) {
+        map.clear();
+        map.grow(self.node_count());
     }
 
     pub fn add_edge(

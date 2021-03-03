@@ -30,6 +30,7 @@ fn with_dfs<N, E, M, F, R>(g: Graph<N, E>, space: Option<&mut DfsSpace<NodeIndex
     where F: FnOnce(&mut Dfs<NodeIndex<N, E>, M>) -> R,
     // where M: VisitMap<
 {
+    
     todo!()
     // let mut local_visitor;
     // let dfs = if let Some(v) = space {
