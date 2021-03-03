@@ -15,11 +15,10 @@ impl<T> VisitMap<T> for fixedbitset::FixedBitSet
     // Ix: IndexType,
 {
     fn visit(&mut self, x: TypedIndex<T>) -> bool {
-        // !self.put(x.index())
-        todo!()
+        !self.put(x.index())
     }
+
     fn is_visited(&self, x: TypedIndex<T>) -> bool {
-        // self.contains(x.index())
-        todo!()
+        self.contains(x.index())
     }
 }
