@@ -1,6 +1,9 @@
 mod algo;
 pub use algo::*;
 
+mod edges;
+pub use edges::*;
+
 mod graph;
 pub use graph::*;
 

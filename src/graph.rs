@@ -37,6 +37,8 @@ pub struct Graph<N, E> {
     edges: generational_arena::Arena<Edge<N, E>>,
 }
 
+
+
 impl<N, E> Graph<N, E> {
     pub fn new() -> Self {
         Self {
