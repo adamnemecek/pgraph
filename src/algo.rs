@@ -25,7 +25,6 @@ pub struct DfsSpace<N, VM> {
 //     f(dfs)
 // }
 
-
 // pub fn toposort<G>(
 //     g: G,
 //     space: Option<&mut DfsSpace<G::NodeId, G::Map>>,

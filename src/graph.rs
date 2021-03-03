@@ -27,7 +27,7 @@ pub struct Node<N, E> {
     /// Associated node data.
     pub weight: N,
     /// Next edge in outgoing and incoming edge lists.
-    next: [EdgeIndex<N, E>; 2],
+    next: [Option<EdgeIndex<N, E>>; 2],
 }
 
 pub struct Graph<N, E> {
@@ -37,15 +37,43 @@ pub struct Graph<N, E> {
 
 impl<N, E> Graph<N, E> {
     pub fn add_node(&mut self, weight: N) -> NodeIndex<N, E> {
-        // let node = Node {
-        //     weight,
-        //     next: [EdgeIndex::end(), EdgeIndex::end()],
-        // };
+        let node = Node {
+            weight,
+            next: Default::default(),
+        };
+
         // let node_idx = NodeIndex::new(self.nodes.len());
         // // check for max capacity, except if we use usize
         // assert!(<Ix as IndexType>::max().index() == !0 || NodeIndex::end() != node_idx);
         // self.nodes.push(node);
         // node_idx
-        todo!()
+        // todo!()
+        self.nodes.typed_insert(node)
     }
+
+    // pub fn add_edge(&mut self, a: NodeIndex<Ix>, b: NodeIndex<Ix>, weight: E) -> EdgeIndex<Ix> {
+    //     let edge_idx = EdgeIndex::new(self.edges.len());
+    //     assert!(<Ix as IndexType>::max().index() == !0 || EdgeIndex::end() != edge_idx);
+    //     let mut edge = Edge {
+    //         weight,
+    //         node: [a, b],
+    //         next: [EdgeIndex::end(); 2],
+    //     };
+    //     match index_twice(&mut self.nodes, a.index(), b.index()) {
+    //         Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
+    //         Pair::One(an) => {
+    //             edge.next = an.next;
+    //             an.next[0] = edge_idx;
+    //             an.next[1] = edge_idx;
+    //         }
+    //         Pair::Both(an, bn) => {
+    //             // a and b are different indices
+    //             edge.next = [an.next[0], bn.next[1]];
+    //             an.next[0] = edge_idx;
+    //             bn.next[1] = edge_idx;
+    //         }
+    //     }
+    //     self.edges.push(edge);
+    //     edge_idx
+    // }
 }

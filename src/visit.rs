@@ -10,10 +10,7 @@ pub trait VisitMap<N> {
     fn is_visited(&self, a: TypedIndex<N>) -> bool;
 }
 
-impl<T> VisitMap<T> for fixedbitset::FixedBitSet
-// where
-    // Ix: IndexType,
-{
+impl<T> VisitMap<T> for fixedbitset::FixedBitSet {
     fn visit(&mut self, x: TypedIndex<T>) -> bool {
         !self.put(x.index())
     }
