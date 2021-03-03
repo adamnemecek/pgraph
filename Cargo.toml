@@ -7,5 +7,5 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-generational-arena = { path = "../generational-arena", ref = "10e3a76", features = ["serde"] }
+generational-arena = { path = "../generational-arena", ref = "b95804b", features = ["serde"] }
 fixedbitset = { version = "0.3.0", default-features = false }

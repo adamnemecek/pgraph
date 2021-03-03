@@ -36,6 +36,13 @@ pub struct Graph<N, E> {
 }
 
 impl<N, E> Graph<N, E> {
+    pub fn new() -> Self {
+        Self {
+            nodes: Default::default(),
+            edges: Default::default(),
+        }
+    }
+
     pub fn add_node(&mut self, weight: N) -> NodeIndex<N, E> {
         let node = Node {
             weight,
@@ -100,6 +107,29 @@ impl<N, E> Graph<N, E> {
         //         bn.next[1] = edge_idx;
         //     }
         // }
+        let edge_index = self.edges.typed_insert(edge);
+        let mut an = &mut self[a];
+        an.next[0] = Some(edge_index);
+
+        let mut bn = &mut self[b];
+        bn.next[0] = Some(edge_index);
         todo!()
+    }
+
+    pub fn get(&mut self, index: NodeIndex<N, E>) -> Option<&Node<N, E>> {
+        self.nodes.typed_get(index)
+    }
+}
+
+impl<N, E> std::ops::Index<NodeIndex<N, E>> for Graph<N, E> {
+    type Output = Node<N, E>;
+    fn index(&self, index: NodeIndex<N, E>) -> &Self::Output {
+        &self.nodes[index]
+    }
+}
+
+impl<N, E> std::ops::IndexMut<NodeIndex<N, E>> for Graph<N, E> {
+    fn index_mut(&mut self, index: NodeIndex<N, E>) -> &mut Self::Output {
+        &mut self.nodes[index]
     }
 }
