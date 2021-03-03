@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 generational-arena = { path = "../generational-arena", ref = "ec642bf", features = ["serde"] }
+fixedbitset = { version = "0.3.0", default-features = false }
