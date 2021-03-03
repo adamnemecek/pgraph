@@ -7,7 +7,7 @@ pub struct Edge<N, E> {
     /// Associated edge data.
     pub weight: E,
     /// Next edge in outgoing and incoming edge lists.
-    next: [EdgeIndex<N, E>; 2],
+    next: [Option<EdgeIndex<N, E>>; 2],
     /// Start and End node index
     node: [NodeIndex<N, E>; 2],
 }
@@ -51,29 +51,55 @@ impl<N, E> Graph<N, E> {
         self.nodes.typed_insert(node)
     }
 
-    // pub fn add_edge(&mut self, a: NodeIndex<Ix>, b: NodeIndex<Ix>, weight: E) -> EdgeIndex<Ix> {
-    //     let edge_idx = EdgeIndex::new(self.edges.len());
-    //     assert!(<Ix as IndexType>::max().index() == !0 || EdgeIndex::end() != edge_idx);
-    //     let mut edge = Edge {
-    //         weight,
-    //         node: [a, b],
-    //         next: [EdgeIndex::end(); 2],
-    //     };
-    //     match index_twice(&mut self.nodes, a.index(), b.index()) {
-    //         Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
-    //         Pair::One(an) => {
-    //             edge.next = an.next;
-    //             an.next[0] = edge_idx;
-    //             an.next[1] = edge_idx;
-    //         }
-    //         Pair::Both(an, bn) => {
-    //             // a and b are different indices
-    //             edge.next = [an.next[0], bn.next[1]];
-    //             an.next[0] = edge_idx;
-    //             bn.next[1] = edge_idx;
-    //         }
-    //     }
-    //     self.edges.push(edge);
-    //     edge_idx
-    // }
+    pub fn add_edge(
+        &mut self,
+        a: NodeIndex<N, E>,
+        b: NodeIndex<N, E>,
+        weight: E,
+    ) -> EdgeIndex<N, E> {
+        assert!(a != b);
+        // let edge_idx = EdgeIndex::new(self.edges.len());
+        // assert!(<Ix as IndexType>::max().index() == !0 || EdgeIndex::end() != edge_idx);
+        // let mut edge = Edge {
+        //     weight,
+        //     node: [a, b],
+        //     next: [EdgeIndex::end(); 2],
+        // };
+        // match index_twice(&mut self.nodes, a.index(), b.index()) {
+        //     Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
+        //     Pair::One(an) => {
+        //         edge.next = an.next;
+        //         an.next[0] = edge_idx;
+        //         an.next[1] = edge_idx;
+        //     }
+        //     Pair::Both(an, bn) => {
+        //         // a and b are different indices
+        //         edge.next = [an.next[0], bn.next[1]];
+        //         an.next[0] = edge_idx;
+        //         bn.next[1] = edge_idx;
+        //     }
+        // }
+        // self.edges.push(edge);
+        // edge_idx
+        let mut edge = Edge {
+            weight,
+            node: [a, b],
+            next: Default::default(),
+        };
+        // match index_twice(&mut self.nodes, a.index(), b.index()) {
+        //     Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
+        //     Pair::One(an) => {
+        //         edge.next = an.next;
+        //         an.next[0] = edge_idx;
+        //         an.next[1] = edge_idx;
+        //     }
+        //     Pair::Both(an, bn) => {
+        //         // a and b are different indices
+        //         edge.next = [an.next[0], bn.next[1]];
+        //         an.next[0] = edge_idx;
+        //         bn.next[1] = edge_idx;
+        //     }
+        // }
+        todo!()
+    }
 }
