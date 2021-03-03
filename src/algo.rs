@@ -25,6 +25,21 @@ pub struct DfsSpace<N, VM> {
 //     f(dfs)
 // }
 
+// fn with_dfs<N, E>(g: Graph<N, E>, space: Option<&mut DfsSpaceType<G>>, f: F) -> R
+// where
+//     G: GraphRef + Visitable,
+//     F: FnOnce(&mut Dfs<G::NodeId, G::Map>) -> R,
+// {
+//     let mut local_visitor;
+//     let dfs = if let Some(v) = space {
+//         &mut v.dfs
+//     } else {
+//         local_visitor = Dfs::empty(g);
+//         &mut local_visitor
+//     };
+//     f(dfs)
+// }
+
 // pub fn toposort<G>(
 //     g: G,
 //     space: Option<&mut DfsSpace<G::NodeId, G::Map>>,

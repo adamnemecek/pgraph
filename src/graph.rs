@@ -112,7 +112,53 @@ impl<N, E> Graph<N, E> {
         an.next[0] = Some(edge_index);
 
         let mut bn = &mut self[b];
-        bn.next[0] = Some(edge_index);
+        bn.next[1] = Some(edge_index);
+        edge_index
+    }
+
+    pub fn remove_node(&mut self, a: NodeIndex<N, E>) -> Option<N> {
+        // self.nodes.get(a.index())?;
+        // for d in &DIRECTIONS {
+        //     let k = d.index();
+
+        //     // Remove all edges from and to this node.
+        //     loop {
+        //         let next = self.nodes[a.index()].next[k];
+        //         if next == EdgeIndex::end() {
+        //             break;
+        //         }
+        //         let ret = self.remove_edge(next);
+        //         debug_assert!(ret.is_some());
+        //         let _ = ret;
+        //     }
+        // }
+
+        // // Use swap_remove -- only the swapped-in node is going to change
+        // // NodeIndex<Ix>, so we only have to walk its edges and update them.
+
+        // let node = self.nodes.swap_remove(a.index());
+
+        // // Find the edge lists of the node that had to relocate.
+        // // It may be that no node had to relocate, then we are done already.
+        // let swap_edges = match self.nodes.get(a.index()) {
+        //     None => return Some(node.weight),
+        //     Some(ed) => ed.next,
+        // };
+
+        // // The swapped element's old index
+        // let old_index = NodeIndex::new(self.nodes.len());
+        // let new_index = a;
+
+        // // Adjust the starts of the out edges, and ends of the in edges.
+        // for &d in &DIRECTIONS {
+        //     let k = d.index();
+        //     let mut edges = edges_walker_mut(&mut self.edges, swap_edges[k], d);
+        //     while let Some(curedge) = edges.next_edge() {
+        //         debug_assert!(curedge.node[k] == old_index);
+        //         curedge.node[k] = new_index;
+        //     }
+        // }
+        // Some(node.weight)
         todo!()
     }
 
