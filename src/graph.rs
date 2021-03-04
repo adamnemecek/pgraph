@@ -28,18 +28,20 @@ pub struct Edge<N, E> {
     // next_incoming: Option<EdgeIndex<N, E>>,
     next: Next<N, E>,
     /// Start and End node index
-    node: [NodeIndex<N, E>; 2],
+    // node: [NodeIndex<N, E>; 2],
+    from: NodeIndex<N, E>,
+    to: NodeIndex<N, E>,
 }
 
-impl<N, E> Edge<N, E> {
-    pub fn source(&self) -> NodeIndex<N, E> {
-        self.node[0]
-    }
+// impl<N, E> Edge<N, E> {
+//     pub fn source(&self) -> NodeIndex<N, E> {
+//         self.node[0]
+//     }
 
-    pub fn target(&self) -> NodeIndex<N, E> {
-        self.node[1]
-    }
-}
+//     pub fn target(&self) -> NodeIndex<N, E> {
+//         self.node[1]
+//     }
+// }
 
 // #[derive(Debug)]
 pub struct Node<N, E> {
@@ -121,7 +123,8 @@ impl<N, E> Graph<N, E> {
 
         let edge = Edge {
             weight,
-            node: [a, b],
+            from: a,
+            to: b,
             next: Next {
                 outgoing: bn.next.outgoing,
                 incoming: an.next.incoming,
