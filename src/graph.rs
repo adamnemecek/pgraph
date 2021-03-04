@@ -115,30 +115,6 @@ impl<N, E> Graph<N, E> {
         weight: E,
     ) -> EdgeIndex<N, E> {
         assert!(a != b);
-        // let edge_idx = EdgeIndex::new(self.edges.len());
-        // assert!(<Ix as IndexType>::max().index() == !0 || EdgeIndex::end() != edge_idx);
-        // let mut edge = Edge {
-        //     weight,
-        //     node: [a, b],
-        //     next: [EdgeIndex::end(); 2],
-        // };
-        // match index_twice(&mut self.nodes, a.index(), b.index()) {
-        //     Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
-        //     Pair::One(an) => {
-        //         edge.next = an.next;
-        //         an.next[0] = edge_idx;
-        //         an.next[1] = edge_idx;
-        //     }
-        //     Pair::Both(an, bn) => {
-        //         // a and b are different indices
-        //         edge.next = [an.next[0], bn.next[1]];
-        //         an.next[0] = edge_idx;
-        //         bn.next[1] = edge_idx;
-        //     }
-        // }
-        // self.edges.push(edge);
-        // edge_idx
-        assert!(a != b);
 
         let an = &self[a];
         let bn = &self[b];
@@ -151,27 +127,14 @@ impl<N, E> Graph<N, E> {
                 incoming: an.next.incoming,
             },
         };
-        // match index_twice(&mut self.nodes, a.index(), b.index()) {
-        //     Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
-        //     Pair::One(an) => {
-        //         edge.next = an.next;
-        //         an.next[0] = edge_idx;
-        //         an.next[1] = edge_idx;
-        //     }
-        //     Pair::Both(an, bn) => {
-        //         // a and b are different indices
-        //         edge.next = [an.next[0], bn.next[1]];
-        //         an.next[0] = edge_idx;
-        //         bn.next[1] = edge_idx;
-        //     }
-        // }
+
         let edge_index = self.edges.typed_insert(edge);
 
-        // let mut an = &mut self[a];
-        // an.next[0] = Some(edge_index);
+        let mut an = &mut self[a];
+        an.next.outgoing = Some(edge_index);
 
-        // let mut bn = &mut self[b];
-        // bn.next[1] = Some(edge_index);
+        let mut bn = &mut self[b];
+        bn.next.incoming = Some(edge_index);
         edge_index
     }
 

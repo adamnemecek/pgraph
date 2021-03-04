@@ -7,3 +7,5 @@ pub use crate::{
     Node,
     NodeIndex,
 };
+
+pub(crate) use crate::Next;
