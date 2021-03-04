@@ -20,15 +20,15 @@ pub struct Edge<N, E> {
     to: NodeIndex<N, E>,
 }
 
-// impl<N, E> Edge<N, E> {
-//     pub fn source(&self) -> NodeIndex<N, E> {
-//         self.node[0]
-//     }
+impl<N, E> Edge<N, E> {
+    pub fn from(&self) -> NodeIndex<N, E> {
+        self.from
+    }
 
-//     pub fn target(&self) -> NodeIndex<N, E> {
-//         self.node[1]
-//     }
-// }
+    pub fn to(&self) -> NodeIndex<N, E> {
+        self.to
+    }
+}
 
 // #[derive(Debug)]
 pub struct Node<N, E> {
@@ -72,8 +72,9 @@ impl<N, E> Graph<N, E> {
         Edges::new(Direction::Incoming, node.next, &self.edges)
     }
 
-    pub fn edges_outgoing(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
-        todo!()
+    pub fn edges_outgoing(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
+        let node = &self[index];
+        Edges::new(Direction::Outgoing, node.next, &self.edges)
     }
 
     pub fn node_count(&self) -> usize {
@@ -109,8 +110,8 @@ impl<N, E> Graph<N, E> {
             from: a,
             to: b,
             next: Next {
-                outgoing: bn.next.outgoing,
-                incoming: an.next.incoming,
+                outgoing: an.next.outgoing,
+                incoming: bn.next.incoming,
             },
         };
 
