@@ -4,6 +4,9 @@ pub use algo::*;
 mod edges;
 pub use edges::*;
 
+mod edges_mut;
+pub use edges_mut::*;
+
 mod graph;
 pub use graph::*;
 

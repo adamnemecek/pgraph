@@ -125,6 +125,24 @@ impl<N, E> Graph<N, E> {
         edge_index
     }
 
+    fn change_edge_link(&mut self, node: NodeIndex<N, E>) {
+        let node = &self.nodes[node];
+        if false {
+        } else {
+            // let mut edges = EdgesMut::new(Direction::Incoming, )
+        }
+    }
+
+    fn change_edge_links(
+        &mut self,
+        from: NodeIndex<N, E>,
+        to: NodeIndex<N, E>,
+        e: EdgeIndex<N, E>,
+        next: Next<N, E>,
+    ) {
+        todo!()
+    }
+
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) {
         // let edge = self.edges[]
         todo!()
