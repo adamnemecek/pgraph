@@ -4,28 +4,7 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct Next<N, E> {
-    outgoing: Option<EdgeIndex<N, E>>,
-    incoming: Option<EdgeIndex<N, E>>,
-}
 
-impl<N, E> Clone for Next<N, E> {
-    fn clone(&self) -> Self {
-        Self { ..*self }
-    }
-}
-
-impl<N, E> Copy for Next<N, E> {}
-
-impl<N, E> Default for Next<N, E> {
-    fn default() -> Self {
-        Self {
-            outgoing: None,
-            incoming: None,
-        }
-    }
-}
 /// The graph's edge type.
 // #[derive(Debug)]
 pub struct Edge<N, E> {
