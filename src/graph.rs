@@ -4,13 +4,29 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
+pub struct Next<N, E> {
+    outgoing: Option<EdgeIndex<N, E>>,
+    incoming: Option<EdgeIndex<N, E>>,
+}
+
+impl<N, E> Default for Next<N, E> {
+    fn default() -> Self {
+        Self {
+            outgoing: None,
+            incoming: None,
+        }
+    }
+}
 /// The graph's edge type.
 // #[derive(Debug)]
 pub struct Edge<N, E> {
     /// Associated edge data.
     pub weight: E,
     /// Next edge in outgoing and incoming edge lists.
-    next: [Option<EdgeIndex<N, E>>; 2],
+    // next: [Option<EdgeIndex<N, E>>; 2],
+    // next_outgoing: Option<EdgeIndex<N, E>>,
+    // next_incoming: Option<EdgeIndex<N, E>>,
+    next: Next<N, E>,
     /// Start and End node index
     node: [NodeIndex<N, E>; 2],
 }
@@ -30,7 +46,10 @@ pub struct Node<N, E> {
     /// Associated node data.
     pub weight: N,
     /// Next edge in outgoing and incoming edge lists.
-    next: [Option<EdgeIndex<N, E>>; 2],
+    // next: [Option<EdgeIndex<N, E>>; 2],
+    // next_outgoing: Option<EdgeIndex<N, E>>,
+    // next_incoming: Option<EdgeIndex<N, E>>,
+    next: Next<N, E>,
 }
 
 pub struct Graph<N, E> {
@@ -49,6 +68,7 @@ impl<N, E> Graph<N, E> {
     pub fn add_node(&mut self, weight: N) -> NodeIndex<N, E> {
         let node = Node {
             weight,
+            // next: Default::default(),
             next: Default::default(),
         };
 
@@ -63,7 +83,8 @@ impl<N, E> Graph<N, E> {
 
     pub fn edges_incoming(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
         let node = &self[node];
-        Edges::new(Direction::Incoming, node.next, &self.edges)
+        // Edges::new(Direction::Incoming, node.next, &self.edges)
+        todo!()
     }
 
     pub fn edges_outgoing(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
@@ -117,10 +138,18 @@ impl<N, E> Graph<N, E> {
         // }
         // self.edges.push(edge);
         // edge_idx
-        let mut edge = Edge {
+        assert!(a != b);
+
+        let an = &self[a];
+        let bn = &self[b];
+
+        let edge = Edge {
             weight,
             node: [a, b],
-            next: Default::default(),
+            next: Next {
+                outgoing: bn.next.outgoing,
+                incoming: an.next.incoming,
+            },
         };
         // match index_twice(&mut self.nodes, a.index(), b.index()) {
         //     Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
@@ -137,11 +166,12 @@ impl<N, E> Graph<N, E> {
         //     }
         // }
         let edge_index = self.edges.typed_insert(edge);
-        let mut an = &mut self[a];
-        an.next[0] = Some(edge_index);
 
-        let mut bn = &mut self[b];
-        bn.next[1] = Some(edge_index);
+        // let mut an = &mut self[a];
+        // an.next[0] = Some(edge_index);
+
+        // let mut bn = &mut self[b];
+        // bn.next[1] = Some(edge_index);
         edge_index
     }
 
