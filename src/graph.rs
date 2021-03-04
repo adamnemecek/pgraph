@@ -4,7 +4,6 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-
 /// The graph's edge type.
 // #[derive(Debug)]
 pub struct Edge<N, E> {
@@ -14,7 +13,7 @@ pub struct Edge<N, E> {
     // next: [Option<EdgeIndex<N, E>>; 2],
     // next_outgoing: Option<EdgeIndex<N, E>>,
     // next_incoming: Option<EdgeIndex<N, E>>,
-    next: Next<N, E>,
+    pub(crate) next: Next<N, E>,
     /// Start and End node index
     // node: [NodeIndex<N, E>; 2],
     from: NodeIndex<N, E>,

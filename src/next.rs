@@ -22,3 +22,13 @@ impl<N, E> Default for Next<N, E> {
         }
     }
 }
+
+impl<N, E> std::ops::Index<Direction> for Next<N, E> {
+    type Output = Option<EdgeIndex<N, E>>;
+    fn index(&self, index: Direction) -> &Self::Output {
+        match index {
+            Direction::Outgoing => &self.outgoing,
+            Direction::Incoming => &self.incoming,
+        }
+    }
+}

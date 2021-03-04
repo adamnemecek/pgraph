@@ -21,15 +21,23 @@ impl<'a, N, E> Edges<'a, N, E> {
 }
 
 impl<'a, N, E> Iterator for Edges<'a, N, E> {
-    type Item = N;
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        (self.edges.len(), None)
-    }
+    type Item = &'a Edge<N, E>;
+    // fn size_hint(&self) -> (usize, Option<usize>) {
+    //     (self.edges.len(), None)
+    // }
 
     fn next(&mut self) -> Option<Self::Item> {
-        match self.direction {
-            Direction::Outgoing => None,
-            Direction::Incoming => None,
+        // match self.direction {
+        // Direction::Outgoing => {
+        if let Some(idx) = self.next[self.direction] {
+            let edge = &self.edges[idx];
+            self.next = edge.next;
+            Some(edge)
+        } else {
+            None
         }
+        // }
+        // Direction::Incoming => None,
+        // }
     }
 }
