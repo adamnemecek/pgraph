@@ -27,6 +27,9 @@ impl<'a, N, E> Iterator for Edges<'a, N, E> {
     }
 
     fn next(&mut self) -> Option<Self::Item> {
-        todo!()
+        match self.direction {
+            Direction::Outgoing => None,
+            Direction::Incoming => None,
+        }
     }
 }

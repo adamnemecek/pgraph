@@ -4,10 +4,19 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct Next<N, E> {
     outgoing: Option<EdgeIndex<N, E>>,
     incoming: Option<EdgeIndex<N, E>>,
 }
+
+impl<N, E> Clone for Next<N, E> {
+    fn clone(&self) -> Self {
+        Self { ..*self }
+    }
+}
+
+impl<N, E> Copy for Next<N, E> {}
 
 impl<N, E> Default for Next<N, E> {
     fn default() -> Self {
@@ -48,9 +57,6 @@ pub struct Node<N, E> {
     /// Associated node data.
     pub weight: N,
     /// Next edge in outgoing and incoming edge lists.
-    // next: [Option<EdgeIndex<N, E>>; 2],
-    // next_outgoing: Option<EdgeIndex<N, E>>,
-    // next_incoming: Option<EdgeIndex<N, E>>,
     next: Next<N, E>,
 }
 
@@ -83,10 +89,9 @@ impl<N, E> Graph<N, E> {
         self.nodes.typed_insert(node)
     }
 
-    pub fn edges_incoming(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
-        let node = &self[node];
-        // Edges::new(Direction::Incoming, node.next, &self.edges)
-        todo!()
+    pub fn edges_incoming(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
+        let node = &self[index];
+        Edges::new(Direction::Incoming, node.next, &self.edges)
     }
 
     pub fn edges_outgoing(&self, node: NodeIndex<N, E>) -> Edges<'_, N, E> {
@@ -141,7 +146,14 @@ impl<N, E> Graph<N, E> {
         edge_index
     }
 
-    pub fn remove_node(&mut self, a: NodeIndex<N, E>) -> Option<N> {
+    pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) {
+        // let edge = self.edges[]
+        todo!()
+    }
+
+    pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {
+        let node = self.nodes.typed_remove(n);
+
         // self.nodes.get(a.index())?;
         // for d in &DIRECTIONS {
         //     let k = d.index();
@@ -202,5 +214,18 @@ impl<N, E> std::ops::Index<NodeIndex<N, E>> for Graph<N, E> {
 impl<N, E> std::ops::IndexMut<NodeIndex<N, E>> for Graph<N, E> {
     fn index_mut(&mut self, index: NodeIndex<N, E>) -> &mut Self::Output {
         &mut self.nodes[index]
+    }
+}
+
+impl<N, E> std::ops::Index<EdgeIndex<N, E>> for Graph<N, E> {
+    type Output = Edge<N, E>;
+    fn index(&self, index: EdgeIndex<N, E>) -> &Self::Output {
+        &self.edges[index]
+    }
+}
+
+impl<N, E> std::ops::IndexMut<EdgeIndex<N, E>> for Graph<N, E> {
+    fn index_mut(&mut self, index: EdgeIndex<N, E>) -> &mut Self::Output {
+        &mut self.edges[index]
     }
 }
