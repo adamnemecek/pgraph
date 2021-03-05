@@ -25,3 +25,13 @@ impl<N, E> Edge<N, E> {
         self.to
     }
 }
+
+impl<N, E> std::ops::Index<Direction> for Edge<N,E> {
+    type Output = NodeIndex<N, E>;
+    fn index(&self, dir: Direction) -> &Self::Output {
+        match dir {
+            Direction::Outgoing => &self.to,
+            Direction::Incoming => &self.from,
+        }
+    }
+}

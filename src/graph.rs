@@ -180,6 +180,11 @@ impl<N, E> Graph<N, E> {
     pub fn get(&mut self, index: NodeIndex<N, E>) -> Option<&Node<N, E>> {
         self.nodes.typed_get(index)
     }
+
+    pub fn clear(&mut self) {
+        self.nodes.clear();
+        self.edges.clear();
+    }
 }
 
 impl<N, E> std::ops::Index<NodeIndex<N, E>> for Graph<N, E> {
