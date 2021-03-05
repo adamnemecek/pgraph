@@ -6,6 +6,7 @@ The architecture is fundamentally based on petgraph.
 
 The graph is generic over the `node` and `edge` value. The graph doesn't store the values directly but wraps each in a structure called `Node` and `Edge` which contain additional metadata.
 
+## Edge
 `Node` storage is pretty self-explanatory.
 `Edges` are trickier.
 
@@ -41,3 +42,5 @@ fn add_edge(
     bn.next.incoming = Some(edge_idx);
 }
 ```
+
+Each edge is on two lists, the `outgoing` list of the `source` node and the `incoming` list of the `target`. 

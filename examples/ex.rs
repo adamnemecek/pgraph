@@ -5,8 +5,10 @@ fn main() {
     let a = gr.add_node("A");
     let b = gr.add_node("B");
     let c = gr.add_node("C");
+    let d = gr.add_node("D");
     let edge = gr.add_edge(c, b, 2);
     let edge = gr.add_edge(a, b, 2);
+    let edge = gr.add_edge(d, b, 2);
 
     for e in gr.edges_incoming(b) {
         let a = &gr[e.from()];
