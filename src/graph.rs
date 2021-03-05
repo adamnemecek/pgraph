@@ -4,8 +4,6 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-
-
 #[derive(Debug)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
@@ -108,20 +106,33 @@ impl<N, E> Graph<N, E> {
         }
     }
 
-    fn change_edge_links(
+    // iterate through the list of
+    fn replace_edge_links(
         &mut self,
-        from: NodeIndex<N, E>,
-        to: NodeIndex<N, E>,
+        node: NodeIndex<N, E>,
         e: EdgeIndex<N, E>,
-        next: Next<N, E>,
+        replace: EdgeIndex<N, E>,
+        dir: Direction,
     ) {
+        let node = &mut self[node];
+        loop {
+            let edge = node.next[dir];
+        }
+
         todo!()
     }
 
-    pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) {
-        let edge = &self.edges[e];
+    pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
+        //
+        if let Some(edge) = &self.edges.typed_remove(e) {
+            // remove the edge from the
 
-        todo!()
+            // self.replace_edge_links(edge.from(), e, replace, Direction::Incoming);
+            // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
+            todo!()
+        } else {
+            None
+        }
     }
 
     pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {

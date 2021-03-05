@@ -32,7 +32,7 @@ impl<N, E> Edge<N, E> {
 //     }
 // }
 
-impl<N, E> std::ops::Index<Direction> for Edge<N,E> {
+impl<N, E> std::ops::Index<Direction> for Edge<N, E> {
     type Output = NodeIndex<N, E>;
     fn index(&self, dir: Direction) -> &Self::Output {
         match dir {

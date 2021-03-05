@@ -8,9 +8,12 @@ pub struct Node<N, E> {
     pub(crate) next: Next<N, E>,
 }
 
-
 impl<N: std::fmt::Debug, E> std::fmt::Debug for Node<N, E> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Node {{weight: {:?}, next: {:?}}}", self.weight, self.next)
+        write!(
+            f,
+            "Node {{weight: {:?}, next: {:?}}}",
+            self.weight, self.next
+        )
     }
 }
