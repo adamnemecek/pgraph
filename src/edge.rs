@@ -41,3 +41,12 @@ impl<N, E> std::ops::Index<Direction> for Edge<N, E> {
         }
     }
 }
+
+// impl<N, E> std::ops::IndexMut<Direction> for Edge<N, E> {
+//     fn index_mut(&mut self, dir: Direction) -> &mut Self::Output {
+//         match dir {
+//             Direction::Outgoing => &mut self.to,
+//             Direction::Incoming => &mut self.from,
+//         }
+//     }
+// }

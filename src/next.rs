@@ -42,3 +42,12 @@ impl<N, E> std::ops::Index<Direction> for Next<N, E> {
         }
     }
 }
+
+impl<N, E> std::ops::IndexMut<Direction> for Next<N, E> {
+    fn index_mut(&mut self, index: Direction) -> &mut Self::Output {
+        match index {
+            Direction::Outgoing => &mut self.outgoing,
+            Direction::Incoming => &mut self.incoming,
+        }
+    }
+}

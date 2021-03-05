@@ -4,6 +4,8 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
+
+
 #[derive(Debug)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
@@ -106,17 +108,53 @@ impl<N, E> Graph<N, E> {
         }
     }
 
-    // iterate through the list of
-    fn replace_edge_links(
+    fn replace_edge_links_of_node(
         &mut self,
         node: NodeIndex<N, E>,
-        e: EdgeIndex<N, E>,
         replace: EdgeIndex<N, E>,
+        with: EdgeIndex<N, E>,
         dir: Direction,
     ) {
+        let next = {
+            self.nodes[node].next
+        };
+        let mut edges = EdgesMut::new(&mut self.edges, next, dir);
+        while let Some(cur_edge) = edges.next() {
+            //
+            if cur_edge.next[dir] == next[dir] {
+                cur_edge.next[dir] = next[dir];
+                break;
+            }
+        }
+    }
+
+    // iterate through the list of
+    fn replace_outgoing_edge_links_of_node(
+        &mut self,
+        node: NodeIndex<N, E>,
+        replace: EdgeIndex<N, E>,
+        with: EdgeIndex<N, E>,
+        dir: Direction,
+    ) {
+
         let node = &mut self[node];
         loop {
-            let edge = node.next[dir];
+            if let Some(next) = node.next.outgoing {
+                if next == replace {
+                    node.next.outgoing = Some(with);
+                }
+            }
+            else {
+                
+            }
+            // let edge = node.next[dir];
+            // let fst = node.next[dir].expect("fdas");
+
+            // if fst == replace {
+                //
+            // } else {
+                // let edges = EdgesMut::new(dir, node.next, &mut self.edges);
+            // }
         }
 
         todo!()
@@ -124,10 +162,10 @@ impl<N, E> Graph<N, E> {
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
         //
-        if let Some(edge) = &self.edges.typed_remove(e) {
-            // remove the edge from the
+        if let Some(edge) = self.edges.typed_get(e) {
+            // remove the edge from the source node and the target node
 
-            // self.replace_edge_links(edge.from(), e, replace, Direction::Incoming);
+            // self.replace_edge_links(e, replace, Direction::Incoming);
             // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
             todo!()
         } else {
