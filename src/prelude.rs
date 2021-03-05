@@ -3,6 +3,7 @@ pub use crate::{
     Edge,
     EdgeIndex,
     Edges,
+    EdgesMut,
     Graph,
     Node,
     NodeIndex,

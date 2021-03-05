@@ -4,32 +4,6 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-/// The graph's edge type.
-// #[derive(Debug)]
-pub struct Edge<N, E> {
-    /// Associated edge data.
-    pub weight: E,
-    /// Next edge in outgoing and incoming edge lists.
-    // next: [Option<EdgeIndex<N, E>>; 2],
-    // next_outgoing: Option<EdgeIndex<N, E>>,
-    // next_incoming: Option<EdgeIndex<N, E>>,
-    pub(crate) next: Next<N, E>,
-    /// Start and End node index
-    // node: [NodeIndex<N, E>; 2],
-    from: NodeIndex<N, E>,
-    to: NodeIndex<N, E>,
-}
-
-impl<N, E> Edge<N, E> {
-    pub fn from(&self) -> NodeIndex<N, E> {
-        self.from
-    }
-
-    pub fn to(&self) -> NodeIndex<N, E> {
-        self.to
-    }
-}
-
 // #[derive(Debug)]
 pub struct Node<N, E> {
     /// Associated node data.
@@ -125,11 +99,17 @@ impl<N, E> Graph<N, E> {
         edge_index
     }
 
-    fn change_edge_link(&mut self, node: NodeIndex<N, E>) {
-        let node = &self.nodes[node];
+    fn change_edge_link(&mut self, node: NodeIndex<N, E>, dir: Direction) {
+        let fst = &self.nodes[node];
         if false {
+            //todo!()
         } else {
-            // let mut edges = EdgesMut::new(Direction::Incoming, )
+            // let mut edges = EdgesMut::new(Direction::Incoming, fst, dir)
+            // while let Some(cur_edge) = edges.next() {
+            //     // if cur_edge.next[dir] == e {
+            //         todo!()
+            //     // }
+            // }
         }
     }
 
@@ -144,7 +124,8 @@ impl<N, E> Graph<N, E> {
     }
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) {
-        // let edge = self.edges[]
+        let edge = &self.edges[e];
+
         todo!()
     }
 

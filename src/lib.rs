@@ -1,6 +1,9 @@
 mod algo;
 pub use algo::*;
 
+mod edge;
+pub use edge::*;
+
 mod edges;
 pub use edges::*;
 
