@@ -16,6 +16,9 @@ pub use graph::*;
 mod next;
 pub use next::*;
 
+mod node;
+pub use node::*;
+
 mod traversal;
 pub use traversal::*;
 

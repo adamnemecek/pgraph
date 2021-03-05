@@ -4,14 +4,9 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-// #[derive(Debug)]
-pub struct Node<N, E> {
-    /// Associated node data.
-    pub weight: N,
-    /// Next edge in outgoing and incoming edge lists.
-    next: Next<N, E>,
-}
 
+
+#[derive(Debug)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
     edges: generational_arena::Arena<Edge<N, E>>,
@@ -212,3 +207,12 @@ impl<N, E> std::ops::IndexMut<EdgeIndex<N, E>> for Graph<N, E> {
         &mut self.edges[index]
     }
 }
+
+// impl<N: std::fmt::Debug, E> std::fmt::Debug for Graph<N, E> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//         write!(f, "Graph {{")?;
+//         write!(f, "\tnodes: {:?}", self.nodes)?;
+//         write!(f, "\tedges: {:?}", self.edges)?;
+//         write!(f, "}}")
+//     }
+// }
