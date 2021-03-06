@@ -19,9 +19,7 @@ fn main() {
     // }
     gr.remove_edge(edge);
 
-
     // println!("graph {:?}", gr);
     // println!("graph2 {:?}", gr2);
     println!("{:?}", gr == gr2);
-
 }

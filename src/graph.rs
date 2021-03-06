@@ -12,15 +12,17 @@ impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
         if self.nodes.len() != other.nodes.len() {
             return false;
         }
+
+        if self.edges.len() != other.edges.len() {
+            return false;
+        }
+
         for (a, b) in self.nodes.iter().zip(other.nodes.iter()) {
             if a.0 != b.0 {
                 return false;
             }
         }
 
-        if self.edges.len() != other.edges.len() {
-            return false;
-        }
         for (a, b) in self.edges.iter().zip(other.edges.iter()) {
             if a.0 != b.0 {
                 return false;
@@ -30,7 +32,7 @@ impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
     }
 }
 
-impl<N: Eq, E: Eq> Eq for Graph<N, E> { }
+impl<N: Eq, E: Eq> Eq for Graph<N, E> {}
 
 // impl<N: Clone, E: Clone> Clone for Graph<N, E> {
 //     fn clone(&self) -> Self {
