@@ -87,11 +87,11 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         self.edges.len()
     }
 
-    pub fn visit_map(&self) -> fixedbitset::FixedBitSet {
-        fixedbitset::FixedBitSet::with_capacity(self.node_count())
+    pub fn visit_map(&self) -> VisitMap<N> {
+        VisitMap::with_capacity(self.node_count())
     }
 
-    pub fn reset_map(&self, map: &mut fixedbitset::FixedBitSet) {
+    pub fn reset_map(&self, map: &mut VisitMap<N>) {
         map.clear();
         map.grow(self.node_count());
     }

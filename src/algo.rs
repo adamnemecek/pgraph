@@ -1,14 +1,28 @@
-use crate::prelude::*;
+use crate::{
+    prelude::*,
+    VisitMap,
+};
+
 #[derive(Clone, Debug)]
-pub struct Dfs<N, VM> {
+pub struct Dfs<N> {
     /// The stack of nodes to visit
-    pub stack: Vec<N>,
+    pub stack: Stack<N>,
     /// The map of discovered nodes
-    pub discovered: VM,
+    pub discovered: VisitMap<N>,
 }
+
+impl<N: std::fmt::Debug> Dfs<N> {
+    pub fn empty<E: std::fmt::Debug>(graph: &Graph<N, E>) -> Self {
+        Self {
+            stack: Stack::new(),
+            discovered: graph.visit_map(),
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
-pub struct DfsSpace<N, VM> {
-    dfs: Dfs<N, VM>,
+pub struct DfsSpace<N> {
+    dfs: Dfs<N>,
 }
 
 // fn with_dfs<G, F, R>(g: G, space: Option<&mut DfsSpaceType<G>>, f: F) -> R
@@ -26,25 +40,25 @@ pub struct DfsSpace<N, VM> {
 //     f(dfs)
 // }
 
-fn with_dfs<N, E, M, F, R>(
-    g: Graph<N, E>,
-    space: Option<&mut DfsSpace<NodeIndex<N, E>, DfsSpace<N, M>>>,
-    f: F,
-) -> R
-where
-    F: FnOnce(&mut Dfs<NodeIndex<N, E>, M>) -> R,
-    // where M: VisitMap<
-{
-    todo!()
-    // let mut local_visitor;
-    // let dfs = if let Some(v) = space {
-    //     &mut v.dfs
-    // } else {
-    //     local_visitor = Dfs::empty(g);
-    //     &mut local_visitor
-    // };
-    // f(dfs)
-}
+// fn with_dfs<N, E, M, F, R>(
+//     g: Graph<N, E>,
+//     space: Option<&mut DfsSpace<NodeIndex<N, E>, DfsSpace<N, M>>>,
+//     f: F,
+// ) -> R
+// where
+//     F: FnOnce(&mut Dfs<NodeIndex<N, E>, M>) -> R,
+//     // where M: VisitMap<
+// {
+
+//     let mut local_visitor;
+//     let dfs = if let Some(v) = space {
+//         &mut v.dfs
+//     } else {
+//         local_visitor = Dfs::empty(g);
+//         &mut local_visitor
+//     };
+//     f(dfs)
+// }
 
 // pub fn toposort<G>(
 //     g: G,

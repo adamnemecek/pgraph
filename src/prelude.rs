@@ -8,6 +8,8 @@ pub use crate::{
     GraphError,
     Node,
     NodeIndex,
+    Stack,
+    VisitMap,
 };
 
 pub(crate) use crate::{

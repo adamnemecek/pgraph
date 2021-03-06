@@ -14,6 +14,9 @@ pub use edges_mut::*;
 mod error;
 pub use error::*;
 
+mod stack;
+pub use stack::*;
+
 mod index;
 pub use index::*;
 
