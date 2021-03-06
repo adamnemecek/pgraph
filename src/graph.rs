@@ -95,8 +95,11 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         a: NodeIndex<N, E>,
         b: NodeIndex<N, E>,
         weight: E,
-    ) -> EdgeIndex<N, E> {
-        assert!(a != b);
+    ) -> Result<EdgeIndex<N, E>, Error> {
+        // assert!(a != b);
+        if a == b {
+            return Err(Error::WouldCycle);
+        }
 
         let an = &self[a];
         let bn = &self[b];
@@ -118,7 +121,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
         let mut bn = &mut self[b];
         bn.next.incoming = Some(edge_index);
-        edge_index
+        Ok(edge_index)
     }
 
     fn replace_edge_links_of_node(
