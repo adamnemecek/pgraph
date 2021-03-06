@@ -23,13 +23,27 @@ fn test_edges() {
     gr.add_edge(f, g, 11.);
     gr.add_edge(e, g, 9.);
 
-    let expected = ["B", "C", "D", "F"];
-    let mut result = vec![];
-    for edge in gr.edges_incoming(e) {
-        // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
-        result.push(gr[edge.from()].weight);
+    // test incoming
+    {
+        let expected = ["B", "C", "D", "F"];
+        let mut result = vec![];
+        for edge in gr.edges_incoming(e) {
+            // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
+            result.push(gr[edge.from()].weight);
+        }
+        result.sort();
+        assert!(expected.iter().eq(result.iter()), "failed outgoing for e");
     }
 
-    result.sort();
-    assert!(expected.iter().eq(result.iter()));
+    // test outgoing
+    {
+        let expected = ["B", "E", "F"];
+        let mut result = vec![];
+        for edge in gr.edges_outgoing(d) {
+            // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
+            result.push(gr[edge.to()].weight);
+        }
+        result.sort();
+        assert!(expected.iter().eq(result.iter()), "failed outgoing for d");
+    }
 }
