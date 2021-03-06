@@ -21,7 +21,7 @@ impl<'a, N, E> Edges<'a, N, E> {
 }
 
 impl<'a, N, E> Iterator for Edges<'a, N, E> {
-    type Item = &'a Edge<N, E>;
+    type Item = (EdgeIndex<N, E>, &'a Edge<N, E>);
     // fn size_hint(&self) -> (usize, Option<usize>) {
     //     (self.edges.len(), None)
     // }
@@ -32,7 +32,7 @@ impl<'a, N, E> Iterator for Edges<'a, N, E> {
         if let Some(idx) = self.next[self.direction] {
             let edge = &self.edges[idx];
             self.next = edge.next;
-            Some(edge)
+            Some((idx, edge))
         } else {
             None
         }

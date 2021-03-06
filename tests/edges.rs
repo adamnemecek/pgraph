@@ -27,8 +27,7 @@ fn test_edges() {
     {
         let expected = ["B", "C", "D", "F"];
         let mut result = vec![];
-        for edge in gr.incoming_edges(e) {
-            // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
+        for (_, edge) in gr.incoming_edges(e) {
             result.push(gr[edge.from()].weight);
         }
         result.sort();
@@ -39,8 +38,7 @@ fn test_edges() {
     {
         let expected = ["B", "E", "F"];
         let mut result = vec![];
-        for edge in gr.outgoing_edges(d) {
-            // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
+        for (_, edge) in gr.outgoing_edges(d) {
             result.push(gr[edge.to()].weight);
         }
         result.sort();
