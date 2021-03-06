@@ -34,13 +34,15 @@ fn neighbors_of<'a>(
         Direction::Incoming => graph.incoming_edges(node),
     };
 
-    let mut result: Vec<_> = edges.map(|(_, edge)| {
-        let node = match direction {
-            Direction::Outgoing => &graph[edge.to()],
-            Direction::Incoming => &graph[edge.from()],
-        };
-        node.weight.to_owned()
-    }).collect();
+    let mut result: Vec<_> = edges
+        .map(|(_, edge)| {
+            let node = match direction {
+                Direction::Outgoing => &graph[edge.to()],
+                Direction::Incoming => &graph[edge.from()],
+            };
+            node.weight.to_owned()
+        })
+        .collect();
     result.sort();
     result
 }
@@ -55,7 +57,6 @@ fn check_edges<'a>(
 
     let msg = format!("expected: {:?}, result: {:?}", expected, result);
     assert!(result.iter().eq(expected.iter()), msg)
-
 }
 
 fn main() {
@@ -77,7 +78,7 @@ fn main() {
     let _ = gr.add_edge(d, f, 7); // 7
     let _ = gr.add_edge(f, e, 8); // 8
     let _ = gr.add_edge(f, g, 9); // 9
-    let _ = gr.add_edge(e, g,10); // 10
+    let _ = gr.add_edge(e, g, 10); // 10
 
     assert!(gr.node_count() == 7);
     assert!(gr.edge_count() == 11);
@@ -102,4 +103,7 @@ fn main() {
     assert!(gr.node_count() == 3);
     assert!(gr.edge_count() == 0);
 
+    for (_, edge) in gr.edges().iter() {
+        assert!(edge.is_disconnected());
+    }
 }

@@ -176,6 +176,14 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         // );
     }
 
+    pub fn nodes(&self) -> &generational_arena::Arena<Node<N, E>> {
+        &self.nodes
+    }
+
+    pub fn edges(&self) -> &generational_arena::Arena<Edge<N, E>> {
+        &self.edges
+    }
+
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
         // println!("remove edge {}", e.debug());
         //

@@ -1,6 +1,5 @@
 use crate::prelude::*;
 
-#[derive(PartialEq, Eq)]
 pub struct Next<N, E> {
     pub(crate) outgoing: Option<EdgeIndex<N, E>>,
     pub(crate) incoming: Option<EdgeIndex<N, E>>,
@@ -11,6 +10,14 @@ impl<N, E> Clone for Next<N, E> {
         Self { ..*self }
     }
 }
+
+impl<N, E> PartialEq for Next<N, E> {
+    fn eq(&self, other: &Self) -> bool {
+        self.outgoing == other.outgoing && self.incoming == other.incoming
+    }
+}
+
+impl<N, E> Eq for Next<N, E> {}
 
 impl<N, E> Copy for Next<N, E> {}
 
