@@ -172,7 +172,21 @@ impl<N, E> Graph<N, E> {
             //     let k = d.index();
 
             //     // Remove all edges from and to this node.
+            let next = node.next;
             loop {
+                if let Some(outgoing) = next.outgoing {
+                    self.remove_edge(outgoing);
+                } else {
+                    break;
+                }
+            }
+            loop {
+                if let Some(incoming) = next.incoming {
+                    self.remove_edge(incoming);
+                } else {
+                    break;
+                }
+            }
                 // let next = self.nodes[n];
                 // let next = self.nodes[a.index()].next[k];
                 // if next == EdgeIndex::end() {
@@ -181,7 +195,6 @@ impl<N, E> Graph<N, E> {
                 // let ret = self.remove_edge(next);
                 // debug_assert!(ret.is_some());
                 // let _ = ret;
-            }
             // }
 
             // // Use swap_remove -- only the swapped-in node is going to change
@@ -210,7 +223,7 @@ impl<N, E> Graph<N, E> {
             //     }
             // }
             // Some(node.weight)
-            todo!()
+            Some(node.weight)
         } else {
             None
         }
