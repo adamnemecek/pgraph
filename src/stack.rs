@@ -27,6 +27,10 @@ impl<T> Stack<T> {
     pub fn peek(&self) -> Option<&T> {
         self.inner.last()
     }
+
+    pub fn clear(&mut self) {
+        self.inner.clear();
+    }
 }
 
 #[cfg(test)]

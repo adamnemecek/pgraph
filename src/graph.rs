@@ -91,7 +91,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         VisitMap::with_capacity(self.node_count())
     }
 
-    pub fn reset_map(&self, map: &mut VisitMap<N>) {
+    pub fn reset_map(&self, map: &mut VisitMap<NodeIndex<N, E>>) {
         map.clear();
         map.grow(self.node_count());
     }
@@ -102,7 +102,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         a: NodeIndex<N, E>,
         b: NodeIndex<N, E>,
         weight: E,
-    ) -> Result<EdgeIndex<N, E>, GraphError<N,E>> {
+    ) -> Result<EdgeIndex<N, E>, GraphError<N, E>> {
         // assert!(a != b);
         if a == b {
             return Err(GraphError::WouldCycle(a));

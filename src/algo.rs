@@ -19,7 +19,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Dfs<NodeIndex<N, E>> {
         }
     }
 
-    pub fn reset(&mut self, graph: &mut Graph<N,E> ) {
+    pub fn reset(&mut self, graph: &Graph<N, E>) {
         graph.reset_map(&mut self.discovered);
         self.stack.clear();
     }
@@ -70,11 +70,9 @@ pub fn toposort<N: std::fmt::Debug, E: std::fmt::Debug>(
 // where
     // G: IntoNeighborsDirected + IntoNodeIdentifiers + Visitable,
 {
-
     // based on kosaraju scc
     with_dfs(g, space, |dfs| {
-
-        dfs.reset(g);
+        dfs.reset(&g);
         let mut finished = g.visit_map();
         todo!()
         // let mut finish_stack = Vec::new();
