@@ -18,12 +18,9 @@ fn test_incoming() {
     }
 }
 
-
 #[test]
 fn test_remove_edge() {
     let mut gr = Graph::<&str, u32>::new();
     let a = gr.add_node("A");
     let b = gr.add_node("B");
-
-    
 }

@@ -44,3 +44,21 @@ fn add_edge(
 ```
 
 Each edge is on two lists, the `outgoing` list of the `source` node and the `incoming` list of the `target`. 
+
+
+```graphviz
+
+digraph {
+    a -> b
+    a -> d
+    d -> b
+    b -> c
+    b -> e
+    c -> e
+    d -> e
+    d -> f
+    f -> e
+    f -> g
+    e -> g
+}
+```

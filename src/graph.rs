@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use fixedbitset::FixedBitSet;
 
 // #[derive(Debug)]
 pub struct Graph<N, E> {
@@ -7,7 +6,7 @@ pub struct Graph<N, E> {
     edges: generational_arena::Arena<Edge<N, E>>,
 }
 
-impl<N, E> Graph<N, E> {
+impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     pub fn new() -> Self {
         Self {
             nodes: Default::default(),
@@ -140,13 +139,21 @@ impl<N, E> Graph<N, E> {
         dir: Direction,
     ) {
         let next = { self.nodes[node].next };
+        // let mut i = 0;
+        println!("replace: {:?} ", replace);
+        println!("next {:?} ", next);
+        println!("dir {:?}", dir);
         let mut edges = EdgesMut::new(&mut self.edges, next, dir);
         while let Some(cur_edge) = edges.next() {
             //
+            println!("cur_edge {:?}", cur_edge);
+            println!("cur_edge.next[dir] {:?}", cur_edge.next[dir]);
+            println!("replace {:?}", replace);
             if cur_edge.next[dir] == Some(replace) {
                 cur_edge.next[dir] = with;
                 break;
             }
+            // i += 1;
         }
     }
 
@@ -159,48 +166,37 @@ impl<N, E> Graph<N, E> {
         };
 
         if let Some((from, to, next)) = t {
-            self.replace_edge_links_of_node(
-                from,
-                e,
-                next.outgoing,
-                Direction::Outgoing,
-            );
-        // }
+            self.replace_edge_links_of_node(from, e, next.outgoing, Direction::Outgoing);
+            // }
 
-        // if let Some(incoming_edge) = edge.next.incoming {
-            self.replace_edge_links_of_node(
-                to,
-                e,
-                next.incoming,
-                Direction::Incoming,
-            );
+            // if let Some(incoming_edge) = edge.next.incoming {
+            self.replace_edge_links_of_node(to, e, next.incoming, Direction::Incoming);
 
             Some(self.edges.typed_remove(e).unwrap().weight)
-
         } else {
             None
         }
-            // // remove the edge from the source node and the target node
-            // // if let Some(outgoing_edge) = edge.next.outgoing {
-            //     self.replace_edge_links_of_node(
-            //         edge.from(),
-            //         e,
-            //         edge.next.outgoing,
-            //         Direction::Outgoing,
-            //     );
-            // // }
+        // // remove the edge from the source node and the target node
+        // // if let Some(outgoing_edge) = edge.next.outgoing {
+        //     self.replace_edge_links_of_node(
+        //         edge.from(),
+        //         e,
+        //         edge.next.outgoing,
+        //         Direction::Outgoing,
+        //     );
+        // // }
 
-            // // if let Some(incoming_edge) = edge.next.incoming {
-            //     self.replace_edge_links_of_node(
-            //         edge.to(),
-            //         e,
-            //         edge.next.outgoing,
-            //         Direction::Incoming,
-            //     );
-            // // }
-            
-            // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
-            // todo!()
+        // // if let Some(incoming_edge) = edge.next.incoming {
+        //     self.replace_edge_links_of_node(
+        //         edge.to(),
+        //         e,
+        //         edge.next.outgoing,
+        //         Direction::Incoming,
+        //     );
+        // // }
+
+        // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
+        // todo!()
         //     Some(edge.weight)
         // } else {
         //     None

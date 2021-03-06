@@ -27,7 +27,9 @@ impl<'a, N: 'a, E: 'a> EdgesMut<'a, N, E> {
     // }
 
     pub fn next(&mut self) -> Option<&mut Edge<N, E>> {
-        if let Some(idx) = self.next[self.direction] {
+        let next = self.next[self.direction];
+
+        if let Some(idx) = next {
             let edge = &mut self.edges[idx];
             self.next = edge.next;
             Some(edge)
