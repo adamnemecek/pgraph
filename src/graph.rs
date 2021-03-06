@@ -113,33 +113,33 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     }
 
     // iterate through the list of
-    fn replace_outgoing_edge_links_of_node(
-        &mut self,
-        node: NodeIndex<N, E>,
-        replace: EdgeIndex<N, E>,
-        with: EdgeIndex<N, E>,
-        dir: Direction,
-    ) {
-        let node = &mut self[node];
-        loop {
-            if let Some(next) = node.next.outgoing {
-                if next == replace {
-                    node.next.outgoing = Some(with);
-                }
-            } else {
-            }
-            // let edge = node.next[dir];
-            // let fst = node.next[dir].expect("fdas");
+    // fn replace_outgoing_edge_links_of_node(
+    //     &mut self,
+    //     node: NodeIndex<N, E>,
+    //     replace: EdgeIndex<N, E>,
+    //     with: EdgeIndex<N, E>,
+    //     dir: Direction,
+    // ) {
+    //     let node = &mut self[node];
+    //     loop {
+    //         if let Some(next) = node.next.outgoing {
+    //             if next == replace {
+    //                 node.next.outgoing = Some(with);
+    //             }
+    //         } else {
+    //         }
+    //         // let edge = node.next[dir];
+    //         // let fst = node.next[dir].expect("fdas");
 
-            // if fst == replace {
-            //
-            // } else {
-            // let edges = EdgesMut::new(dir, node.next, &mut self.edges);
-            // }
-        }
+    //         // if fst == replace {
+    //         //
+    //         // } else {
+    //         // let edges = EdgesMut::new(dir, node.next, &mut self.edges);
+    //         // }
+    //     }
 
-        todo!()
-    }
+    //     todo!()
+    // }
 
     fn replace_edge_links_of_node(
         &mut self,
@@ -148,27 +148,40 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         with: Option<EdgeIndex<N, E>>,
         dir: Direction,
     ) {
-        let next = { self.nodes[node].next };
-        // let mut i = 0;
-        println!("replace: {:?} ", replace);
-        println!("next {:?} ", next);
+        println!("replace: {} ", replace.debug());
+        println!("with {:?} ", with);
+        // println!("next {:?} ", next);
         println!("dir {:?}", dir);
-        // let mut edges = EdgesMut::new(&mut self.edges, next, dir);
-        let mut edges = match dir {
-            Direction::Outgoing => self.outgoing_edges_mut(node),
-            Direction::Incoming => self.incoming_edges_mut(node),
-        };
 
-        while let Some((_, cur_edge)) = edges.next() {
-            //
-            println!("cur_edge {:?}", cur_edge);
-            println!("cur_edge.next[dir] {:?}", cur_edge.next[dir]);
-            println!("replace {:?}", replace);
-            if cur_edge.next[dir] == Some(replace) {
-                cur_edge.next[dir] = with;
-                break;
+        let next = { self.nodes[node].next };
+        if next[dir] == Some(replace) {
+            self.nodes[node].next[dir] = with;
+        } else {
+            // let mut i = 0;
+
+            // let mut edges = EdgesMut::new(&mut self.edges, next, dir);
+            let mut edges = match dir {
+                Direction::Outgoing => self.outgoing_edges_mut(node),
+                Direction::Incoming => self.incoming_edges_mut(node),
+            };
+
+            let fst = next[dir];
+
+            while let Some((index, cur_edge)) = edges.next() {
+                //
+                println!("cur_edge index {:?}", index);
+                println!("cur_edge {:?}", cur_edge);
+                println!("cur_edge.next[dir] {:?}", cur_edge.next[dir]);
+                println!("replace {:?}", replace);
+                println!("with {:?}", with);
+                println!("next[dir] {:?}", next[dir]);
+                if index == replace {
+                    assert!(cur_edge.next[dir] != next[dir]);
+                    cur_edge.next[dir] = next[dir];
+                    break;
+                }
+                // i += 1;
             }
-            // i += 1;
         }
     }
 
@@ -182,40 +195,12 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
         if let Some((from, to, next)) = t {
             self.replace_edge_links_of_node(from, e, next.outgoing, Direction::Outgoing);
-            // }
-
-            // if let Some(incoming_edge) = edge.next.incoming {
             self.replace_edge_links_of_node(to, e, next.incoming, Direction::Incoming);
 
             Some(self.edges.typed_remove(e).unwrap().weight)
         } else {
             None
         }
-        // // remove the edge from the source node and the target node
-        // // if let Some(outgoing_edge) = edge.next.outgoing {
-        //     self.replace_edge_links_of_node(
-        //         edge.from(),
-        //         e,
-        //         edge.next.outgoing,
-        //         Direction::Outgoing,
-        //     );
-        // // }
-
-        // // if let Some(incoming_edge) = edge.next.incoming {
-        //     self.replace_edge_links_of_node(
-        //         edge.to(),
-        //         e,
-        //         edge.next.outgoing,
-        //         Direction::Incoming,
-        //     );
-        // // }
-
-        // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
-        // todo!()
-        //     Some(edge.weight)
-        // } else {
-        //     None
-        // }
     }
 
     pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {
