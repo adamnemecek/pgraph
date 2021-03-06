@@ -1,8 +1,6 @@
 use crate::prelude::*;
 use fixedbitset::FixedBitSet;
 
-
-
 // #[derive(Debug)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
@@ -138,15 +136,15 @@ impl<N, E> Graph<N, E> {
         &mut self,
         node: NodeIndex<N, E>,
         replace: EdgeIndex<N, E>,
-        with: EdgeIndex<N, E>,
+        with: Option<EdgeIndex<N, E>>,
         dir: Direction,
     ) {
         let next = { self.nodes[node].next };
         let mut edges = EdgesMut::new(&mut self.edges, next, dir);
         while let Some(cur_edge) = edges.next() {
             //
-            if cur_edge.next[dir] == next[dir] {
-                cur_edge.next[dir] = next[dir];
+            if cur_edge.next[dir] == Some(replace) {
+                cur_edge.next[dir] = with;
                 break;
             }
         }
@@ -154,10 +152,26 @@ impl<N, E> Graph<N, E> {
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
         //
-        if let Some(edge) = self.edges.typed_get(e) {
+        if let Some(edge) = self.edges.typed_remove(e) {
             // remove the edge from the source node and the target node
+            if let Some(outgoing_edge) = edge.next.outgoing {
+                self.replace_edge_links_of_node(
+                    edge.from(),
+                    outgoing_edge,
+                    edge.next.outgoing,
+                    Direction::Incoming,
+                );
+            }
 
-            // self.replace_edge_links(e, replace, Direction::Incoming);
+            if let Some(incoming_edge) = edge.next.incoming {
+                self.replace_edge_links_of_node(
+                    edge.from(),
+                    incoming_edge,
+                    edge.next.outgoing,
+                    Direction::Incoming,
+                );
+            }
+
             // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
             todo!()
         } else {
@@ -187,14 +201,14 @@ impl<N, E> Graph<N, E> {
                     break;
                 }
             }
-                // let next = self.nodes[n];
-                // let next = self.nodes[a.index()].next[k];
-                // if next == EdgeIndex::end() {
-                //     break;
-                // }
-                // let ret = self.remove_edge(next);
-                // debug_assert!(ret.is_some());
-                // let _ = ret;
+            // let next = self.nodes[n];
+            // let next = self.nodes[a.index()].next[k];
+            // if next == EdgeIndex::end() {
+            //     break;
+            // }
+            // let ret = self.remove_edge(next);
+            // debug_assert!(ret.is_some());
+            // let _ = ret;
             // }
 
             // // Use swap_remove -- only the swapped-in node is going to change

@@ -10,6 +10,6 @@ pub use crate::{
 };
 
 pub(crate) use crate::{
-    Next,
     DebugExt,
+    Next,
 };
