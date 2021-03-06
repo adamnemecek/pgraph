@@ -23,5 +23,11 @@ fn test_remove_node() {
     let _ = gr.add_edge(f, g, 11.);
     let _ = gr.add_edge(e, g, 9.);
 
+    assert!(gr.node_count() == 7);
     assert!(gr.edge_count() == 11);
+
+    gr.remove_node(e);
+
+    assert!(gr.node_count() == 6);
+    assert!(gr.edge_count() == 6);
 }
