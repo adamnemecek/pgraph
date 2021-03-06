@@ -67,20 +67,20 @@ fn main() {
     let e = gr.add_node("E"); // 4
     let f = gr.add_node("F"); // 5
     let g = gr.add_node("G"); // 6
-    let _ = gr.add_edge(a, b, 7.); // 0
-    let _ = gr.add_edge(a, d, 5.); // 1
-    let _ = gr.add_edge(d, b, 9.); // 2
-    let _ = gr.add_edge(b, c, 8.); // 3
-    let _ = gr.add_edge(b, e, 7.); // 4
-    let _ = gr.add_edge(c, e, 5.); // 5
-    let _ = gr.add_edge(d, e, 15.); // 6
-    let _ = gr.add_edge(d, f, 6.); // 7
-    let _ = gr.add_edge(f, e, 8.); // 8
-    let _ = gr.add_edge(f, g, 11.); // 9
-    let _ = gr.add_edge(e, g, 9.); // 10
+    let _ = gr.add_edge(a, b, 0); // 0
+    let _ = gr.add_edge(a, d, 1); // 1
+    let _ = gr.add_edge(d, b, 2); // 2
+    let _ = gr.add_edge(b, c, 3); // 3
+    let _ = gr.add_edge(b, e, 4); // 4
+    let _ = gr.add_edge(c, e, 5); // 5
+    let _ = gr.add_edge(d, e, 6); // 6
+    let _ = gr.add_edge(d, f, 7); // 7
+    let _ = gr.add_edge(f, e, 8); // 8
+    let _ = gr.add_edge(f, g, 9); // 9
+    let _ = gr.add_edge(e, g,10); // 10
 
-    // assert!(gr.node_count() == 7);
-    // assert!(gr.edge_count() == 11);
+    assert!(gr.node_count() == 7);
+    assert!(gr.edge_count() == 11);
 
 
 
@@ -89,11 +89,11 @@ fn main() {
 
 
 
-    // assert!(gr.node_count() == 6);
-    // assert!(gr.edge_count() == 6);
+    assert!(gr.node_count() == 6);
+    assert!(gr.edge_count() == 6);
 
     gr.remove_node(f);
-}
 
-// the problem happens when you remove the node e,
-// it doesn't remove the e -> f edge from the f node list
+    assert!(gr.node_count() == 5);
+    assert!(gr.edge_count() == 4);
+}

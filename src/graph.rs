@@ -160,7 +160,9 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
                 // println!("replace {:?}", replace);
                 // println!("with {:?}", with);
                 // println!("next[dir] {:?}", next[dir]);
-                if index == replace {
+                if cur_edge.next[dir] == Some(replace) {
+                    debug_assert!(cur_edge.next[dir] != with);
+                    // println!("replacing {} with {}", cur_edge.next[dir].debug(), with.debug());
                     // assert!(cur_edge.next[dir] != next[dir]);
                     cur_edge.next[dir] = with;
                     // found = true;
@@ -175,6 +177,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     }
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
+        // println!("remove edge {}", e.debug());
         //
         let t = if let Some(edge) = self.edges.typed_get(e) {
             Some((edge.from(), edge.to(), edge.next))
