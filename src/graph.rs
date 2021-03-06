@@ -178,14 +178,15 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     }
 
     pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {
-        if let Some(node) = self.nodes.typed_remove(n) {
+        if let Some(_) = self.nodes.typed_get(n) {
             // self.nodes.get(a.index())?;
             // for d in &DIRECTIONS {
             //     let k = d.index();
 
             //     // Remove all edges from and to this node.
-            let next = node.next;
+
             loop {
+                let next = self.nodes[n].next;
                 if let Some(outgoing) = next.outgoing {
                     self.remove_edge(outgoing);
                 } else {
@@ -193,6 +194,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
                 }
             }
             loop {
+                let next = self.nodes[n].next;
                 if let Some(incoming) = next.incoming {
                     self.remove_edge(incoming);
                 } else {
@@ -235,6 +237,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             //     }
             // }
             // Some(node.weight)
+            let node = self.nodes.typed_remove(n).unwrap();
             Some(node.weight)
         } else {
             None

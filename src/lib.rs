@@ -1,5 +1,4 @@
 #[deny(unused_must_use)]
-
 mod algo;
 pub use algo::*;
 
