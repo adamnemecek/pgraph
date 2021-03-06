@@ -10,6 +10,9 @@ pub use edges::*;
 mod edges_mut;
 pub use edges_mut::*;
 
+mod index;
+pub use index::*;
+
 mod graph;
 pub use graph::*;
 

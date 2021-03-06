@@ -25,11 +25,15 @@ impl<N, E> Default for Next<N, E> {
 
 impl<N, E> std::fmt::Debug for Next<N, E> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Next {{outgoing: {:?}, incoming: {:?}}}",
-            self.outgoing, self.incoming
-        )
+        // write!(
+        //     f,
+        //     "Next {{outgoing: {:?}, incoming: {:?}}}",
+        //     self.outgoing, self.incoming
+        // )
+        write!(f, "Next {{\n")?;
+        write!(f, "\toutgoing: {}\n", self.outgoing.debug())?;
+        write!(f, "\tincoming: {},\n", self.incoming.debug())?;
+        write!(f, "\t}}\n")
     }
 }
 
