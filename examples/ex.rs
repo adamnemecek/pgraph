@@ -10,9 +10,10 @@ fn main() {
     let edge = gr.add_edge(a, b, 2);
     let edge = gr.add_edge(d, b, 2);
 
-    for e in gr.edges_incoming(b) {
-        let a = &gr[e.from()];
-        let b = &gr[e.to()];
-        println!("{:?} {:?}", a.weight, b.weight);
-    }
+    // for e in gr.edges_incoming(b) {
+    //     let a = &gr[e.from()];
+    //     let b = &gr[e.to()];
+    //     println!("{:?} {:?}", a.weight, b.weight);
+    // }
+    println!("graph {:?}", gr);
 }

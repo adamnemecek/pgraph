@@ -1,10 +1,25 @@
 use crate::prelude::*;
 use fixedbitset::FixedBitSet;
+use generational_arena::TypedIndex2;
 
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-#[derive(Debug)]
+pub(crate) trait DebugExt {
+    fn debug(&self) -> String;
+}
+
+impl<T> DebugExt for generational_arena::TypedIndex<T> {
+    fn debug(&self) -> String {
+        format!(
+            "index: {:?}, generation: {:?}",
+            self.index(),
+            self.generation()
+        )
+    }
+}
+
+// #[derive(Debug)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
     edges: generational_arena::Arena<Edge<N, E>>,
@@ -253,11 +268,16 @@ impl<N, E> std::ops::IndexMut<EdgeIndex<N, E>> for Graph<N, E> {
     }
 }
 
-// impl<N: std::fmt::Debug, E> std::fmt::Debug for Graph<N, E> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         write!(f, "Graph {{")?;
-//         write!(f, "\tnodes: {:?}", self.nodes)?;
-//         write!(f, "\tedges: {:?}", self.edges)?;
-//         write!(f, "}}")
-//     }
-// }
+impl<N: std::fmt::Debug, E: std::fmt::Debug> std::fmt::Debug for Graph<N, E> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Graph {{\n")?;
+        for (index, node) in self.nodes.iter() {
+            write!(f, "{:?}\n\t{:?}\n", index, node)?;
+        }
+
+        for (index, edge) in self.edges.iter() {
+            write!(f, "{:?}\n\t{:?}\n", index, edge)?;
+        }
+        write!(f, "}}")
+    }
+}

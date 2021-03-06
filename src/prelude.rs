@@ -9,4 +9,7 @@ pub use crate::{
     NodeIndex,
 };
 
-pub(crate) use crate::Next;
+pub(crate) use crate::{
+    Next,
+    DebugExt,
+};

@@ -1,7 +1,7 @@
 use crate::prelude::*;
 
 /// The graph's edge type.
-#[derive(Debug)]
+// #[derive(Debug)]
 pub struct Edge<N, E> {
     /// Associated edge data.
     pub weight: E,
@@ -26,11 +26,16 @@ impl<N, E> Edge<N, E> {
     }
 }
 
-// impl<N, E: std::fmt::Debug> std::fmt::Debug for Edge<N, E> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         write!(f, "Edge {{weight: {:?}, next: {:?}, from: {:?}, to: {:?}}}", self.weight, self.next, self.from, self.to)
-//     }
-// }
+impl<N: std::fmt::Debug, E: std::fmt::Debug> std::fmt::Debug for Edge<N, E> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Edge {{\n")?;
+        write!(f, "\tweight: {:?}\n", self.weight)?;
+        write!(f, "\t  from: {},\n", self.from.debug())?;
+        write!(f, "\t    to: {},\n", self.to.debug())?;
+        write!(f, "\t  next: {:?}\n", self.next)?;
+        write!(f, "}}\n")
+    }
+}
 
 impl<N, E> std::ops::Index<Direction> for Edge<N, E> {
     type Output = NodeIndex<N, E>;
