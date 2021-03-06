@@ -4,8 +4,6 @@ use fixedbitset::FixedBitSet;
 pub type NodeIndex<N, E> = generational_arena::TypedIndex<Node<N, E>>;
 pub type EdgeIndex<N, E> = generational_arena::TypedIndex<Edge<N, E>>;
 
-
-
 #[derive(Debug)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
@@ -108,26 +106,6 @@ impl<N, E> Graph<N, E> {
         }
     }
 
-    fn replace_edge_links_of_node(
-        &mut self,
-        node: NodeIndex<N, E>,
-        replace: EdgeIndex<N, E>,
-        with: EdgeIndex<N, E>,
-        dir: Direction,
-    ) {
-        let next = {
-            self.nodes[node].next
-        };
-        let mut edges = EdgesMut::new(&mut self.edges, next, dir);
-        while let Some(cur_edge) = edges.next() {
-            //
-            if cur_edge.next[dir] == next[dir] {
-                cur_edge.next[dir] = next[dir];
-                break;
-            }
-        }
-    }
-
     // iterate through the list of
     fn replace_outgoing_edge_links_of_node(
         &mut self,
@@ -136,28 +114,43 @@ impl<N, E> Graph<N, E> {
         with: EdgeIndex<N, E>,
         dir: Direction,
     ) {
-
         let node = &mut self[node];
         loop {
             if let Some(next) = node.next.outgoing {
                 if next == replace {
                     node.next.outgoing = Some(with);
                 }
-            }
-            else {
-                
+            } else {
             }
             // let edge = node.next[dir];
             // let fst = node.next[dir].expect("fdas");
 
             // if fst == replace {
-                //
+            //
             // } else {
-                // let edges = EdgesMut::new(dir, node.next, &mut self.edges);
+            // let edges = EdgesMut::new(dir, node.next, &mut self.edges);
             // }
         }
 
         todo!()
+    }
+
+    fn replace_edge_links_of_node(
+        &mut self,
+        node: NodeIndex<N, E>,
+        replace: EdgeIndex<N, E>,
+        with: EdgeIndex<N, E>,
+        dir: Direction,
+    ) {
+        let next = { self.nodes[node].next };
+        let mut edges = EdgesMut::new(&mut self.edges, next, dir);
+        while let Some(cur_edge) = edges.next() {
+            //
+            if cur_edge.next[dir] == next[dir] {
+                cur_edge.next[dir] = next[dir];
+                break;
+            }
+        }
     }
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
@@ -174,51 +167,54 @@ impl<N, E> Graph<N, E> {
     }
 
     pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {
-        let node = self.nodes.typed_remove(n);
+        if let Some(node) = self.nodes.typed_remove(n) {
+            // self.nodes.get(a.index())?;
+            // for d in &DIRECTIONS {
+            //     let k = d.index();
 
-        // self.nodes.get(a.index())?;
-        // for d in &DIRECTIONS {
-        //     let k = d.index();
+            //     // Remove all edges from and to this node.
+            loop {
+                // let next = self.nodes[n];
+                // let next = self.nodes[a.index()].next[k];
+                // if next == EdgeIndex::end() {
+                //     break;
+                // }
+                // let ret = self.remove_edge(next);
+                // debug_assert!(ret.is_some());
+                // let _ = ret;
+            }
+            // }
 
-        //     // Remove all edges from and to this node.
-        //     loop {
-        //         let next = self.nodes[a.index()].next[k];
-        //         if next == EdgeIndex::end() {
-        //             break;
-        //         }
-        //         let ret = self.remove_edge(next);
-        //         debug_assert!(ret.is_some());
-        //         let _ = ret;
-        //     }
-        // }
+            // // Use swap_remove -- only the swapped-in node is going to change
+            // // NodeIndex<Ix>, so we only have to walk its edges and update them.
 
-        // // Use swap_remove -- only the swapped-in node is going to change
-        // // NodeIndex<Ix>, so we only have to walk its edges and update them.
+            // let node = self.nodes.swap_remove(a.index());
 
-        // let node = self.nodes.swap_remove(a.index());
+            // // Find the edge lists of the node that had to relocate.
+            // // It may be that no node had to relocate, then we are done already.
+            // let swap_edges = match self.nodes.get(a.index()) {
+            //     None => return Some(node.weight),
+            //     Some(ed) => ed.next,
+            // };
 
-        // // Find the edge lists of the node that had to relocate.
-        // // It may be that no node had to relocate, then we are done already.
-        // let swap_edges = match self.nodes.get(a.index()) {
-        //     None => return Some(node.weight),
-        //     Some(ed) => ed.next,
-        // };
+            // // The swapped element's old index
+            // let old_index = NodeIndex::new(self.nodes.len());
+            // let new_index = a;
 
-        // // The swapped element's old index
-        // let old_index = NodeIndex::new(self.nodes.len());
-        // let new_index = a;
-
-        // // Adjust the starts of the out edges, and ends of the in edges.
-        // for &d in &DIRECTIONS {
-        //     let k = d.index();
-        //     let mut edges = edges_walker_mut(&mut self.edges, swap_edges[k], d);
-        //     while let Some(curedge) = edges.next_edge() {
-        //         debug_assert!(curedge.node[k] == old_index);
-        //         curedge.node[k] = new_index;
-        //     }
-        // }
-        // Some(node.weight)
-        todo!()
+            // // Adjust the starts of the out edges, and ends of the in edges.
+            // for &d in &DIRECTIONS {
+            //     let k = d.index();
+            //     let mut edges = edges_walker_mut(&mut self.edges, swap_edges[k], d);
+            //     while let Some(curedge) = edges.next_edge() {
+            //         debug_assert!(curedge.node[k] == old_index);
+            //         curedge.node[k] = new_index;
+            //     }
+            // }
+            // Some(node.weight)
+            todo!()
+        } else {
+            None
+        }
     }
 
     pub fn get(&mut self, index: NodeIndex<N, E>) -> Option<&Node<N, E>> {
