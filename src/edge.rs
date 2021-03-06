@@ -26,9 +26,9 @@ impl<N, E> Edge<N, E> {
         self.to
     }
 
-    pub fn is_disconnected(&self) -> bool {
-        self.next == Next::default()
-    }
+    // pub fn is_disconnected(&self) -> bool {
+    //     self.next == Next::default()
+    // }
 }
 
 impl<N: std::fmt::Debug, E: std::fmt::Debug> std::fmt::Debug for Edge<N, E> {
