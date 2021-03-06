@@ -17,3 +17,13 @@ fn test_incoming() {
         result.push(b.weight);
     }
 }
+
+
+#[test]
+fn test_remove_edge() {
+    let mut gr = Graph::<&str, u32>::new();
+    let a = gr.add_node("A");
+    let b = gr.add_node("B");
+
+    
+}

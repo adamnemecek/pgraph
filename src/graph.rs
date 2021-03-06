@@ -152,32 +152,59 @@ impl<N, E> Graph<N, E> {
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
         //
-        if let Some(edge) = self.edges.typed_remove(e) {
-            // remove the edge from the source node and the target node
-            if let Some(outgoing_edge) = edge.next.outgoing {
-                self.replace_edge_links_of_node(
-                    edge.from(),
-                    outgoing_edge,
-                    edge.next.outgoing,
-                    Direction::Outgoing,
-                );
-            }
+        let t = if let Some(edge) = self.edges.typed_get(e) {
+            Some((edge.from(), edge.to(), edge.next))
+        } else {
+            None
+        };
 
-            if let Some(incoming_edge) = edge.next.incoming {
-                self.replace_edge_links_of_node(
-                    edge.to(),
-                    incoming_edge,
-                    edge.next.outgoing,
-                    Direction::Incoming,
-                );
-            }
+        if let Some((from, to, next)) = t {
+            self.replace_edge_links_of_node(
+                from,
+                e,
+                next.outgoing,
+                Direction::Outgoing,
+            );
+        // }
 
-            // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
-            // todo!()
-            Some(edge.weight)
+        // if let Some(incoming_edge) = edge.next.incoming {
+            self.replace_edge_links_of_node(
+                to,
+                e,
+                next.incoming,
+                Direction::Incoming,
+            );
+
+            Some(self.edges.typed_remove(e).unwrap().weight)
+
         } else {
             None
         }
+            // // remove the edge from the source node and the target node
+            // // if let Some(outgoing_edge) = edge.next.outgoing {
+            //     self.replace_edge_links_of_node(
+            //         edge.from(),
+            //         e,
+            //         edge.next.outgoing,
+            //         Direction::Outgoing,
+            //     );
+            // // }
+
+            // // if let Some(incoming_edge) = edge.next.incoming {
+            //     self.replace_edge_links_of_node(
+            //         edge.to(),
+            //         e,
+            //         edge.next.outgoing,
+            //         Direction::Incoming,
+            //     );
+            // // }
+            
+            // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
+            // todo!()
+        //     Some(edge.weight)
+        // } else {
+        //     None
+        // }
     }
 
     pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {
