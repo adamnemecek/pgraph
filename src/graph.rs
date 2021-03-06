@@ -152,7 +152,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
                 Direction::Incoming => self.incoming_edges_mut(node),
             };
 
-            while let Some((index, cur_edge)) = edges.next() {
+            while let Some((_, cur_edge)) = edges.next() {
                 //
                 // println!("cur_edge index {:?}", index);
                 // println!("cur_edge {:?}", cur_edge);

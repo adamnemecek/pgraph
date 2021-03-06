@@ -82,12 +82,7 @@ fn main() {
     assert!(gr.node_count() == 7);
     assert!(gr.edge_count() == 11);
 
-
-
     gr.remove_node(e);
-    // println!("graph: {:?}", gr);
-
-
 
     assert!(gr.node_count() == 6);
     assert!(gr.edge_count() == 6);
@@ -96,4 +91,15 @@ fn main() {
 
     assert!(gr.node_count() == 5);
     assert!(gr.edge_count() == 4);
+
+    gr.remove_node(a);
+
+    assert!(gr.node_count() == 4);
+    assert!(gr.edge_count() == 2);
+
+    gr.remove_node(b);
+
+    assert!(gr.node_count() == 3);
+    assert!(gr.edge_count() == 0);
+
 }
