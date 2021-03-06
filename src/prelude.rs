@@ -4,8 +4,8 @@ pub use crate::{
     EdgeIndex,
     Edges,
     EdgesMut,
-    Error,
     Graph,
+    GraphError,
     Node,
     NodeIndex,
 };

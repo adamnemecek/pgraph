@@ -95,10 +95,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         a: NodeIndex<N, E>,
         b: NodeIndex<N, E>,
         weight: E,
-    ) -> Result<EdgeIndex<N, E>, Error> {
+    ) -> Result<EdgeIndex<N, E>, GraphError> {
         // assert!(a != b);
         if a == b {
-            return Err(Error::WouldCycle);
+            return Err(GraphError::WouldCycle);
         }
 
         let an = &self[a];
