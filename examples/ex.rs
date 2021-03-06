@@ -24,18 +24,17 @@ use pgraph::prelude::*;
 //     println!("{:?}", gr == gr2);
 // }
 
-fn check_edges<'a>(
+fn neighbors_of<'a>(
     graph: &Graph<&'a str, u32>,
     direction: Direction,
     node: NodeIndex<&'a str, u32>,
-    expected: &[&str],
-) {
+) -> Vec<String> {
     let edges = match direction {
         Direction::Outgoing => graph.outgoing_edges(node),
         Direction::Incoming => graph.incoming_edges(node),
     };
 
-    let mut result: Vec<_> = edges.map(|(idx, edge)| {
+    let mut result: Vec<_> = edges.map(|(_, edge)| {
         let node = match direction {
             Direction::Outgoing => &graph[edge.to()],
             Direction::Incoming => &graph[edge.from()],
@@ -43,6 +42,16 @@ fn check_edges<'a>(
         node.weight.to_owned()
     }).collect();
     result.sort();
+    result
+}
+
+fn check_edges<'a>(
+    graph: &Graph<&'a str, u32>,
+    direction: Direction,
+    node: NodeIndex<&'a str, u32>,
+    expected: &[&str],
+) {
+    let result = neighbors_of(graph, direction, node);
 
     let msg = format!("expected: {:?}, result: {:?}", expected, result);
     assert!(result.iter().eq(expected.iter()), msg)
@@ -73,8 +82,12 @@ fn main() {
     // assert!(gr.node_count() == 7);
     // assert!(gr.edge_count() == 11);
 
+
+
     gr.remove_node(e);
-    println!("graph: {:?}", gr);
+    // println!("graph: {:?}", gr);
+
+
 
     // assert!(gr.node_count() == 6);
     // assert!(gr.edge_count() == 6);
