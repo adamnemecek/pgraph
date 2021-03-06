@@ -131,13 +131,20 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         with: Option<EdgeIndex<N, E>>,
         dir: Direction,
     ) {
+        // let mut found = false;
+        // println!("----");
+        // println!("on node {}", node.debug());
         // println!("replace: {} ", replace.debug());
-        // println!("with {:?} ", with);
+
+        // println!("with {} ", with.debug());
         // // println!("next {:?} ", next);
         // println!("dir {:?}", dir);
 
         let next = { self.nodes[node].next };
+        // let nxt = next[dir];
+        // println!("nxt {:?}", nxt);
         if next[dir] == Some(replace) {
+            // found = true;
             self.nodes[node].next[dir] = with;
         } else {
             let mut edges = match dir {
@@ -155,11 +162,16 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
                 // println!("next[dir] {:?}", next[dir]);
                 if index == replace {
                     // assert!(cur_edge.next[dir] != next[dir]);
-                    cur_edge.next[dir] = next[dir];
+                    cur_edge.next[dir] = with;
+                    // found = true;
                     break;
                 }
             }
         }
+        // assert!(
+        //     found,
+        //     format!("failed to replace edge {:?} with {:?}", replace, with)
+        // );
     }
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
@@ -171,6 +183,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         };
 
         if let Some((from, to, next)) = t {
+            println!(
+                "removing edge from node {:?} to node {:?}",
+                self.nodes[from].weight, self.nodes[to].weight
+            );
             self.replace_edge_links_of_node(from, e, next.outgoing, Direction::Outgoing);
             self.replace_edge_links_of_node(to, e, next.incoming, Direction::Incoming);
 
@@ -188,10 +204,24 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
             //     // Remove all edges from and to this node.
 
+            let mut i = 0;
             loop {
                 let next = self.nodes[n].next;
                 if let Some(outgoing) = next.outgoing {
-                    self.remove_edge(outgoing);
+                    // println!("removing outgoing edge {:?} {:?}", i, outgoing.debug());
+                    let z = self.remove_edge(outgoing);
+                    assert!(
+                        z.is_some(),
+                        format!(
+                            "failed to remove outgoing edge {} of node {}",
+                            outgoing.debug(),
+                            n.debug()
+                        )
+                    );
+                    // i += 1;
+                    // if outgoing.index() == 8 {
+                    //     break;
+                    // }
                 } else {
                     break;
                 }
@@ -199,7 +229,16 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             loop {
                 let next = self.nodes[n].next;
                 if let Some(incoming) = next.incoming {
-                    self.remove_edge(incoming);
+                    // println!("removing incoming edge {:?}", incoming.debug());
+                    let z = self.remove_edge(incoming);
+                    assert!(
+                        z.is_some(),
+                        format!(
+                            "failed to remove edge incoming {} of node {}",
+                            incoming.debug(),
+                            n.debug()
+                        )
+                    );
                 } else {
                     break;
                 }

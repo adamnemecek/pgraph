@@ -30,4 +30,9 @@ fn test_remove_node() {
 
     assert!(gr.node_count() == 6);
     assert!(gr.edge_count() == 6);
+
+    gr.remove_node(a);
+
+    // assert!(gr.node_count() == 5);
+    // assert!(gr.edge_count() == 4);
 }
