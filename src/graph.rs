@@ -194,10 +194,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         };
 
         if let Some((from, to, next)) = t {
-            println!(
-                "removing edge from node {:?} to node {:?}",
-                self.nodes[from].weight, self.nodes[to].weight
-            );
+            // println!(
+            //     "removing edge from node {:?} to node {:?}",
+            //     self.nodes[from].weight, self.nodes[to].weight
+            // );
             self.replace_edge_links_of_node(from, e, next.outgoing, Direction::Outgoing);
             self.replace_edge_links_of_node(to, e, next.incoming, Direction::Incoming);
 
