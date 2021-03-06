@@ -34,15 +34,6 @@ impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
 
 impl<N: Eq, E: Eq> Eq for Graph<N, E> {}
 
-// impl<N: Clone, E: Clone> Clone for Graph<N, E> {
-//     fn clone(&self) -> Self {
-//         Self {
-//             edges: self.edges.clone(),
-//             nodes: self.nodes.clone(),
-//         }
-//     }
-// }
-
 impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     pub fn new() -> Self {
         Self {
@@ -58,12 +49,6 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             next: Default::default(),
         };
 
-        // let node_idx = NodeIndex::new(self.nodes.len());
-        // // check for max capacity, except if we use usize
-        // assert!(<Ix as IndexType>::max().index() == !0 || NodeIndex::end() != node_idx);
-        // self.nodes.push(node);
-        // node_idx
-        // todo!()
         self.nodes.typed_insert(node)
     }
 
@@ -104,6 +89,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         map.grow(self.node_count());
     }
 
+    #[must_use]
     pub fn add_edge(
         &mut self,
         a: NodeIndex<N, E>,
@@ -135,49 +121,6 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         edge_index
     }
 
-    fn change_edge_link(&mut self, node: NodeIndex<N, E>, dir: Direction) {
-        let fst = &self.nodes[node];
-        if false {
-            //todo!()
-        } else {
-            // let mut edges = EdgesMut::new(Direction::Incoming, fst, dir)
-            // while let Some(cur_edge) = edges.next() {
-            //     // if cur_edge.next[dir] == e {
-            //         todo!()
-            //     // }
-            // }
-        }
-    }
-
-    // iterate through the list of
-    // fn replace_outgoing_edge_links_of_node(
-    //     &mut self,
-    //     node: NodeIndex<N, E>,
-    //     replace: EdgeIndex<N, E>,
-    //     with: EdgeIndex<N, E>,
-    //     dir: Direction,
-    // ) {
-    //     let node = &mut self[node];
-    //     loop {
-    //         if let Some(next) = node.next.outgoing {
-    //             if next == replace {
-    //                 node.next.outgoing = Some(with);
-    //             }
-    //         } else {
-    //         }
-    //         // let edge = node.next[dir];
-    //         // let fst = node.next[dir].expect("fdas");
-
-    //         // if fst == replace {
-    //         //
-    //         // } else {
-    //         // let edges = EdgesMut::new(dir, node.next, &mut self.edges);
-    //         // }
-    //     }
-
-    //     todo!()
-    // }
-
     fn replace_edge_links_of_node(
         &mut self,
         node: NodeIndex<N, E>,
@@ -185,10 +128,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         with: Option<EdgeIndex<N, E>>,
         dir: Direction,
     ) {
-        println!("replace: {} ", replace.debug());
-        println!("with {:?} ", with);
-        // println!("next {:?} ", next);
-        println!("dir {:?}", dir);
+        // println!("replace: {} ", replace.debug());
+        // println!("with {:?} ", with);
+        // // println!("next {:?} ", next);
+        // println!("dir {:?}", dir);
 
         let next = { self.nodes[node].next };
         if next[dir] == Some(replace) {
@@ -201,12 +144,12 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
             while let Some((index, cur_edge)) = edges.next() {
                 //
-                println!("cur_edge index {:?}", index);
-                println!("cur_edge {:?}", cur_edge);
-                println!("cur_edge.next[dir] {:?}", cur_edge.next[dir]);
-                println!("replace {:?}", replace);
-                println!("with {:?}", with);
-                println!("next[dir] {:?}", next[dir]);
+                // println!("cur_edge index {:?}", index);
+                // println!("cur_edge {:?}", cur_edge);
+                // println!("cur_edge.next[dir] {:?}", cur_edge.next[dir]);
+                // println!("replace {:?}", replace);
+                // println!("with {:?}", with);
+                // println!("next[dir] {:?}", next[dir]);
                 if index == replace {
                     // assert!(cur_edge.next[dir] != next[dir]);
                     cur_edge.next[dir] = next[dir];
