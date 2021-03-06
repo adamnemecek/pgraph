@@ -42,6 +42,13 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         }
     }
 
+    pub fn with_capacity(node_len: usize, edge_len: usize) -> Self {
+        Self {
+            nodes: generational_arena::Arena::with_capacity(node_len),
+            edges: generational_arena::Arena::with_capacity(edge_len),
+        }
+    }
+
     pub fn add_node(&mut self, weight: N) -> NodeIndex<N, E> {
         let node = Node {
             weight,

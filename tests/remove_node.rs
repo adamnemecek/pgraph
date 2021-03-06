@@ -50,4 +50,3 @@ fn test_remove_node() {
     //     assert!(edge.is_disconnected());
     // }
 }
-
