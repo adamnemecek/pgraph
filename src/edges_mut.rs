@@ -8,9 +8,9 @@ pub struct EdgesMut<'a, N: 'a, E: 'a> {
 
 impl<'a, N: 'a, E: 'a> EdgesMut<'a, N, E> {
     pub(crate) fn new(
-        edges: &'a mut generational_arena::Arena<Edge<N, E>>,
-        next: Next<N, E>,
         direction: Direction,
+        next: Next<N, E>,
+        edges: &'a mut generational_arena::Arena<Edge<N, E>>,
     ) -> Self {
         Self {
             direction,
@@ -26,13 +26,13 @@ impl<'a, N: 'a, E: 'a> EdgesMut<'a, N, E> {
     //     (self.edges.len(), None)
     // }
 
-    pub fn next(&mut self) -> Option<&mut Edge<N, E>> {
+    pub fn next(&mut self) -> Option<(EdgeIndex<N, E>, &mut Edge<N, E>)> {
         let next = self.next[self.direction];
 
         if let Some(idx) = next {
             let edge = &mut self.edges[idx];
             self.next = edge.next;
-            Some(edge)
+            Some((idx, edge))
         } else {
             None
         }

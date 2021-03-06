@@ -2,7 +2,7 @@
 use pgraph::prelude::*;
 
 #[test]
-fn test_edges() {
+fn test_edges_mut() {
     let mut gr = Graph::new();
     let a = gr.add_node("A");
     let b = gr.add_node("B");
@@ -26,24 +26,32 @@ fn test_edges() {
     // test incoming
     {
         let expected = ["B", "C", "D", "F"];
+
+        let mut edges = gr.incoming_edges_mut(e);
+        let mut indices = vec![];
+        while let Some((index, _)) = edges.next() {
+            indices.push(index);
+        }
+
         let mut result = vec![];
-        for edge in gr.incoming_edges(e) {
-            // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
-            result.push(gr[edge.from()].weight);
+        for idx in indices {
+            let from = gr[idx].from();
+            result.push(gr[from].weight.to_owned());
         }
         result.sort();
+        println!("edges mut {:?}", result);
         assert!(expected.iter().eq(result.iter()), "failed outgoing for e");
     }
 
     // test outgoing
     {
-        let expected = ["B", "E", "F"];
-        let mut result = vec![];
-        for edge in gr.outgoing_edges(d) {
-            // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
-            result.push(gr[edge.to()].weight);
-        }
-        result.sort();
-        assert!(expected.iter().eq(result.iter()), "failed outgoing for d");
+        // let expected = ["B", "E", "F"];
+        // let mut result = vec![];
+        // for edge in gr.outgoing_edges(d) {
+        //     // println!("stuff {:?} {:?}", gr[edge.from()].weight, gr[edge.to()].weight);
+        //     result.push(gr[edge.to()].weight);
+        // }
+        // result.sort();
+        // assert!(expected.iter().eq(result.iter()), "failed outgoing for d");
     }
 }

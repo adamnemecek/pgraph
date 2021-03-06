@@ -30,14 +30,24 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         self.nodes.typed_insert(node)
     }
 
-    pub fn edges_incoming(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
+    pub fn incoming_edges(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
         let node = &self[index];
         Edges::new(Direction::Incoming, node.next, &self.edges)
     }
 
-    pub fn edges_outgoing(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
+    pub fn outgoing_edges(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
         let node = &self[index];
         Edges::new(Direction::Outgoing, node.next, &self.edges)
+    }
+
+    pub fn incoming_edges_mut(&mut self, index: NodeIndex<N, E>) -> EdgesMut<'_, N, E> {
+        let node = &self[index];
+        EdgesMut::new(Direction::Incoming, node.next, &mut self.edges)
+    }
+
+    pub fn outgoing_edges_mut(&mut self, index: NodeIndex<N, E>) -> EdgesMut<'_, N, E> {
+        let node = &self[index];
+        EdgesMut::new(Direction::Outgoing, node.next, &mut self.edges)
     }
 
     pub fn node_count(&self) -> usize {
@@ -143,8 +153,13 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         println!("replace: {:?} ", replace);
         println!("next {:?} ", next);
         println!("dir {:?}", dir);
-        let mut edges = EdgesMut::new(&mut self.edges, next, dir);
-        while let Some(cur_edge) = edges.next() {
+        // let mut edges = EdgesMut::new(&mut self.edges, next, dir);
+        let mut edges = match dir {
+            Direction::Outgoing => self.outgoing_edges_mut(node),
+            Direction::Incoming => self.incoming_edges_mut(node),
+        };
+
+        while let Some((_, cur_edge)) = edges.next() {
             //
             println!("cur_edge {:?}", cur_edge);
             println!("cur_edge.next[dir] {:?}", cur_edge.next[dir]);
