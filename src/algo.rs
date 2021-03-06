@@ -11,8 +11,8 @@ pub struct Dfs<N> {
     pub discovered: VisitMap<N>,
 }
 
-impl<N: std::fmt::Debug> Dfs<N> {
-    pub fn empty<E: std::fmt::Debug>(graph: &Graph<N, E>) -> Self {
+impl<N: std::fmt::Debug, E: std::fmt::Debug> Dfs<NodeIndex<N, E>> {
+    pub fn empty(graph: &Graph<N, E>) -> Self {
         Self {
             stack: Stack::new(),
             discovered: graph.visit_map(),
@@ -40,25 +40,23 @@ pub struct DfsSpace<N> {
 //     f(dfs)
 // }
 
-// fn with_dfs<N, E, M, F, R>(
-//     g: Graph<N, E>,
-//     space: Option<&mut DfsSpace<NodeIndex<N, E>, DfsSpace<N, M>>>,
-//     f: F,
-// ) -> R
-// where
-//     F: FnOnce(&mut Dfs<NodeIndex<N, E>, M>) -> R,
-//     // where M: VisitMap<
-// {
-
-//     let mut local_visitor;
-//     let dfs = if let Some(v) = space {
-//         &mut v.dfs
-//     } else {
-//         local_visitor = Dfs::empty(g);
-//         &mut local_visitor
-//     };
-//     f(dfs)
-// }
+fn with_dfs<N: std::fmt::Debug, E: std::fmt::Debug, F, R>(
+    g: &Graph<N, E>,
+    space: Option<&mut DfsSpace<NodeIndex<N, E>>>,
+    f: F,
+) -> R
+where
+    F: FnOnce(&mut Dfs<NodeIndex<N, E>>) -> R,
+{
+    let mut local_visitor;
+    let dfs = if let Some(v) = space {
+        &mut v.dfs
+    } else {
+        local_visitor = Dfs::empty(g);
+        &mut local_visitor
+    };
+    f(dfs)
+}
 
 // pub fn toposort<G>(
 //     g: G,

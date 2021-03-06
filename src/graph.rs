@@ -87,7 +87,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         self.edges.len()
     }
 
-    pub fn visit_map(&self) -> VisitMap<N> {
+    pub fn visit_map(&self) -> VisitMap<NodeIndex<N, E>> {
         VisitMap::with_capacity(self.node_count())
     }
 
