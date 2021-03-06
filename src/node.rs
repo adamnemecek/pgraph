@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
 // #[derive(Debug)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Node<N, E> {
     /// Associated node data.
     pub weight: N,

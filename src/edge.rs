@@ -2,6 +2,7 @@ use crate::prelude::*;
 
 /// The graph's edge type.
 // #[derive(Debug)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Edge<N, E> {
     /// Associated edge data.
     pub weight: E,

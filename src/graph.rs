@@ -1,10 +1,45 @@
 use crate::prelude::*;
 
 // #[derive(Debug)]
+#[derive(Clone)]
 pub struct Graph<N, E> {
     nodes: generational_arena::Arena<Node<N, E>>,
     edges: generational_arena::Arena<Edge<N, E>>,
 }
+
+impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
+    fn eq(&self, other: &Self) -> bool {
+        if self.nodes.len() != other.nodes.len() {
+            return false;
+        }
+        for (a, b) in self.nodes.iter().zip(other.nodes.iter()) {
+            if a.0 != b.0 {
+                return false;
+            }
+        }
+
+        if self.edges.len() != other.edges.len() {
+            return false;
+        }
+        for (a, b) in self.edges.iter().zip(other.edges.iter()) {
+            if a.0 != b.0 {
+                return false;
+            }
+        }
+        true
+    }
+}
+
+impl<N: Eq, E: Eq> Eq for Graph<N, E> { }
+
+// impl<N: Clone, E: Clone> Clone for Graph<N, E> {
+//     fn clone(&self) -> Self {
+//         Self {
+//             edges: self.edges.clone(),
+//             nodes: self.nodes.clone(),
+//         }
+//     }
+// }
 
 impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     pub fn new() -> Self {
@@ -157,15 +192,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         if next[dir] == Some(replace) {
             self.nodes[node].next[dir] = with;
         } else {
-            // let mut i = 0;
-
-            // let mut edges = EdgesMut::new(&mut self.edges, next, dir);
             let mut edges = match dir {
                 Direction::Outgoing => self.outgoing_edges_mut(node),
                 Direction::Incoming => self.incoming_edges_mut(node),
             };
-
-            let fst = next[dir];
 
             while let Some((index, cur_edge)) = edges.next() {
                 //
@@ -176,11 +206,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
                 println!("with {:?}", with);
                 println!("next[dir] {:?}", next[dir]);
                 if index == replace {
-                    assert!(cur_edge.next[dir] != next[dir]);
+                    // assert!(cur_edge.next[dir] != next[dir]);
                     cur_edge.next[dir] = next[dir];
                     break;
                 }
-                // i += 1;
             }
         }
     }
