@@ -159,13 +159,13 @@ impl<N, E> Graph<N, E> {
                     edge.from(),
                     outgoing_edge,
                     edge.next.outgoing,
-                    Direction::Incoming,
+                    Direction::Outgoing,
                 );
             }
 
             if let Some(incoming_edge) = edge.next.incoming {
                 self.replace_edge_links_of_node(
-                    edge.from(),
+                    edge.to(),
                     incoming_edge,
                     edge.next.outgoing,
                     Direction::Incoming,
@@ -173,7 +173,8 @@ impl<N, E> Graph<N, E> {
             }
 
             // self.replace_edge_links(edge.to(), e, replace, Direction::Outgoing);
-            todo!()
+            // todo!()
+            Some(edge.weight)
         } else {
             None
         }
