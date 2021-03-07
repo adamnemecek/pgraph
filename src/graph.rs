@@ -321,6 +321,16 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         self.nodes.clear();
         self.edges.clear();
     }
+
+    pub fn dot_graph(&self) -> String {
+        let mut ret: String = "".to_owned();
+
+        for (_, edge) in self.edges.iter() {
+            let s = format!("{:?} -> {:?}", edge.from().index(), edge.to().index());
+            ret.push_str(&s);
+        }
+        ret
+    }
 }
 
 impl<N, E> std::ops::Index<NodeIndex<N, E>> for Graph<N, E> {
