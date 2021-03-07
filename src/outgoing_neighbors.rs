@@ -13,7 +13,7 @@ impl<'a, N: std::fmt::Debug, E: std::fmt::Debug> OutgoingNeighbors<'a, N, E> {
             // index,
             // inner,
             // next: inner[index].next,
-            edges: inner.outgoing_edges(index)
+            edges: inner.outgoing_edges(index),
         }
     }
 }

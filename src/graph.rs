@@ -35,12 +35,18 @@ impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
 
 impl<N: Eq, E: Eq> Eq for Graph<N, E> {}
 
-impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
-    pub fn new() -> Self {
+impl<N, E> Default for Graph<N, E> {
+    fn default() -> Self {
         Self {
             nodes: Default::default(),
             edges: Default::default(),
         }
+    }
+}
+
+impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
+    pub fn new() -> Self {
+        Self::default()
     }
 
     pub fn with_capacity(node_len: usize, edge_len: usize) -> Self {
@@ -337,7 +343,11 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         let mut ret: String = "".to_owned();
         ret.push_str("digraph {\n");
         for (_, edge) in self.edges.iter() {
-            let s = format!("\t{:?} -> {:?}\n", self[edge.from()].weight, self[edge.to()].weight);
+            let s = format!(
+                "\t{:?} -> {:?}\n",
+                self[edge.from()].weight,
+                self[edge.to()].weight
+            );
             ret.push_str(&s);
         }
         ret.push_str("}\n");

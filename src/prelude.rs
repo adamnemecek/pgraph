@@ -1,4 +1,5 @@
 pub use crate::{
+    toposort,
     Direction,
     Edge,
     EdgeIndex,
@@ -15,11 +16,9 @@ pub use crate::{
     Reversed,
     Stack,
     VisitMap,
-    toposort,
 };
 
 pub(crate) use crate::{
     DebugExt,
     Next,
 };
-

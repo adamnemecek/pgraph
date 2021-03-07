@@ -29,15 +29,7 @@ fn test_toposort() {
         result.push(gr[e].weight);
     }
 
-    let expected = vec![
-        "A",
-        "D",
-        "F",
-        "B",
-        "C",
-        "E",
-        "G",
-    ];
+    let expected = vec!["A", "D", "F", "B", "C", "E", "G"];
 
     assert!(expected.iter().eq(result.iter()));
 }

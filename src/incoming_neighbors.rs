@@ -12,7 +12,7 @@ impl<'a, N: std::fmt::Debug, E: std::fmt::Debug> IncomingNeighbors<'a, N, E> {
         Self {
             // index,
             // inner,
-            edges: inner.incoming_edges(index)
+            edges: inner.incoming_edges(index),
         }
     }
 }
