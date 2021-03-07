@@ -6,11 +6,11 @@ pub use crate::{
     EdgesMut,
     Graph,
     GraphError,
+    Neighbors,
     Node,
     NodeIndex,
     Stack,
     VisitMap,
-    Neighbors,
 };
 
 pub(crate) use crate::{

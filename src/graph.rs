@@ -192,7 +192,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         &self.edges
     }
 
-    pub fn neighbors(&self, typed_index: NodeIndex<N,E>) -> Neighbors<N, E> {
+    pub fn neighbors(&self, typed_index: NodeIndex<N, E>) -> Neighbors<N, E> {
         todo!()
     }
 

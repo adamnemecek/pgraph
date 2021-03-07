@@ -24,9 +24,23 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Dfs<NodeIndex<N, E>> {
         self.stack.clear();
     }
 
-    pub fn move_to(&mut self, start: NodeIndex<N,E>) {
+    pub fn move_to(&mut self, start: NodeIndex<N, E>) {
         self.stack.clear();
         self.stack.push(start);
+    }
+
+    pub fn next(&mut self, graph: Graph<N, E>) -> Option<NodeIndex<N, E>> {
+        while let Some(node) = self.stack.pop() {
+            if self.discovered.visit(node) {
+                for succ in graph.neighbors(node) {
+                    if !self.discovered.is_visited(succ) {
+                        self.stack.push(succ);
+                    }
+                }
+                return Some(node);
+            }
+        }
+        None
     }
 }
 
