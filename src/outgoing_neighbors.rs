@@ -20,9 +20,30 @@ impl<'a, N, E> Iterator for OutgoingNeighbors<'a, N, E> {
     type Item = NodeIndex<N, E>;
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(index) = self.next.outgoing {
-            None
+            let node = self.inner[index].to();
+            self.next = self.inner[node].next;
+            Some(node)
         } else {
             None
         }
     }
 }
+
+// match self.edges.get(self.next[0].index()) {
+//     None => {}
+//     Some(edge) => {
+//         self.next[0] = edge.next[0];
+//         return Some(edge.nodes[1]);
+//     }
+// }
+// // Then incoming edges
+// // For an "undirected" iterator (traverse both incoming
+// // and outgoing edge lists), make sure we don't double
+// // count selfloops by skipping them in the incoming list.
+// while let Some(edge) = self.edges.get(self.next[1].index()) {
+//     self.next[1] = edge.next[1];
+//     if edge.nodes[0] != self.skip_start {
+//         return Some(edge.nodes[0]);
+//     }
+// }
+// None

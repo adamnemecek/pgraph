@@ -1,6 +1,7 @@
 use pgraph::prelude::*;
 
-fn main() {
+#[test]
+fn test_outgoing_neighbors() {
     let mut gr = Graph::new();
     let a = gr.add_node("A"); // 0
     let b = gr.add_node("B"); // 1
@@ -21,8 +22,7 @@ fn main() {
     let _ = gr.add_edge(f, g, 9); // 9
     let _ = gr.add_edge(e, g, 10); // 10
 
-    let topo = toposort(&gr, None).unwrap();
-    for e in topo {
+    for e in gr.outgoing_neighbors(a) {
         println!("{:?}", gr[e].weight);
     }
 }

@@ -19,8 +19,10 @@ impl<'a, N, E> IncomingNeighbors<'a, N, E> {
 impl<'a, N, E> Iterator for IncomingNeighbors<'a, N, E> {
     type Item = NodeIndex<N, E>;
     fn next(&mut self) -> Option<Self::Item> {
-        if let Some(index) = self.next.outgoing {
-            None
+        if let Some(index) = self.next.incoming {
+            let node = self.inner[index].from();
+            self.next = self.inner[node].next;
+            Some(node)
         } else {
             None
         }
