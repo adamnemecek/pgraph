@@ -49,16 +49,16 @@ Each edge is on two lists, the `outgoing` list of the `source` node and the `inc
 ```graphviz
 
 digraph {
-    a -> b
-    a -> d
-    d -> b
-    b -> c
-    b -> e
-    c -> e
-    d -> e
-    d -> f
-    f -> e
-    f -> g
-    e -> g
+    "A" -> "B"
+    "A" -> "D"
+    "D" -> "B"
+    "B" -> "C"
+    "B" -> "E"
+    "C" -> "E"
+    "D" -> "E"
+    "D" -> "F"
+    "F" -> "E"
+    "F" -> "G"
+    "E" -> "G"
 }
 ```

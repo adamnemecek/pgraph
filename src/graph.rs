@@ -324,11 +324,23 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
     pub fn dot_graph(&self) -> String {
         let mut ret: String = "".to_owned();
-
+        ret.push_str("digraph {\n");
         for (_, edge) in self.edges.iter() {
-            let s = format!("{:?} -> {:?}", edge.from().index(), edge.to().index());
+            let s = format!("\t{:?} -> {:?}\n", edge.from().index(), edge.to().index());
             ret.push_str(&s);
         }
+        ret.push_str("}\n");
+        ret
+    }
+
+    pub fn dot_graph_weights(&self) -> String {
+        let mut ret: String = "".to_owned();
+        ret.push_str("digraph {\n");
+        for (_, edge) in self.edges.iter() {
+            let s = format!("\t{:?} -> {:?}\n", self[edge.from()].weight, self[edge.to()].weight);
+            ret.push_str(&s);
+        }
+        ret.push_str("}\n");
         ret
     }
 }

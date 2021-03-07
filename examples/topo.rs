@@ -21,8 +21,9 @@ fn main() {
     let _ = gr.add_edge(f, g, 9); // 9
     let _ = gr.add_edge(e, g, 10); // 10
 
-    let topo = toposort(&gr, None).unwrap();
-    for e in topo {
-        println!("{:?}", gr[e].weight);
-    }
+    // let topo = toposort(&gr, None).unwrap();
+    // for e in topo {
+    //     println!("{:?}", gr[e].weight);
+    // }
+    println!("{}", gr.dot_graph_weights());
 }
