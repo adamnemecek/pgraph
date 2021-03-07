@@ -14,6 +14,9 @@ pub use edges_mut::*;
 mod error;
 pub use error::*;
 
+mod graph_kind;
+pub use graph_kind::*;
+
 mod stack;
 pub use stack::*;
 
@@ -37,6 +40,9 @@ pub use traversal::*;
 
 mod visit;
 pub use visit::*;
+
+mod reversed;
+pub use reversed::*;
 
 pub mod prelude;
 

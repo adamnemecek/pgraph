@@ -29,7 +29,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Dfs<NodeIndex<N, E>> {
         self.stack.push(start);
     }
 
-    pub fn next(&mut self, graph: Graph<N, E>) -> Option<NodeIndex<N, E>> {
+    pub fn next(&mut self, graph: impl GraphKind<N, E>) -> Option<NodeIndex<N, E>> {
         while let Some(node) = self.stack.pop() {
             if self.discovered.visit(node) {
                 for succ in graph.neighbors(node) {
@@ -128,12 +128,12 @@ pub fn toposort<N: std::fmt::Debug, E: std::fmt::Debug>(
         for &i in &finish_stack {
             dfs.move_to(i);
             let mut cycle = false;
-            // while let Some(j) = dfs.next(Reversed(g)) {
-            //     if cycle {
-            //         return Err(GraphError::WouldCycle(j));
-            //     }
-            //     cycle = true;
-            // }
+            while let Some(j) = dfs.next(Reversed::new(g)) {
+                if cycle {
+                    return Err(GraphError::WouldCycle(j));
+                }
+                cycle = true;
+            }
         }
 
         Ok(finish_stack)

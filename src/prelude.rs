@@ -11,6 +11,8 @@ pub use crate::{
     NodeIndex,
     Stack,
     VisitMap,
+    Reversed,
+    GraphKind,
 };
 
 pub(crate) use crate::{
