@@ -12,6 +12,6 @@ impl<'a, N, E> Reversed<'a, N, E> {
 
 impl<'a, N, E> GraphKind<N, E> for Reversed<'a, N, E> {
     fn neighbors(&self, node: NodeIndex<N, E>) -> Neighbors<N, E> {
-        todo!()
+        Neighbors::new(self.inner, node)
     }
 }
