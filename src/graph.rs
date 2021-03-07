@@ -192,8 +192,12 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         &self.edges
     }
 
-    pub fn neighbors(&self, typed_index: NodeIndex<N, E>) -> Neighbors<N, E> {
-        todo!()
+    pub fn incoming_neighbors(&self, node: NodeIndex<N, E>) -> IncomingNeighbors<N, E> {
+        IncomingNeighbors::new(self, node)
+    }
+
+    pub fn outgoing_neighbors(&self, node: NodeIndex<N, E>) -> OutgoingNeighbors<N, E> {
+        OutgoingNeighbors::new(self, node)
     }
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {

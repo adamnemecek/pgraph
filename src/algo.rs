@@ -104,7 +104,7 @@ pub fn toposort<N: std::fmt::Debug, E: std::fmt::Debug>(
             while let Some(&nx) = dfs.stack.peek() {
                 if dfs.discovered.visit(nx) {
                     // First time visiting `nx`: Push neighbors, don't pop `nx`
-                    for succ in g.neighbors(nx) {
+                    for succ in g.outgoing_neighbors(nx) {
                         if succ == nx {
                             // self cycle
                             return Err(GraphError::WouldCycle(nx));

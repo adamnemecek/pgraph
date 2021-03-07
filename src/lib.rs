@@ -20,8 +20,11 @@ pub use graph_kind::*;
 mod stack;
 pub use stack::*;
 
-mod neighbors;
-pub use neighbors::*;
+mod graph_ref;
+pub use graph_ref::*;
+
+mod incoming_neighbors;
+pub use incoming_neighbors::*;
 
 mod index;
 pub use index::*;
@@ -34,6 +37,9 @@ pub use next::*;
 
 mod node;
 pub use node::*;
+
+mod outgoing_neighbors;
+pub use outgoing_neighbors::*;
 
 mod traversal;
 pub use traversal::*;

@@ -7,12 +7,15 @@ pub use crate::{
     Graph,
     GraphError,
     GraphKind,
-    Neighbors,
+    GraphRef,
+    IncomingNeighbors,
     Node,
     NodeIndex,
+    OutgoingNeighbors,
     Reversed,
     Stack,
     VisitMap,
+    toposort,
 };
 
 pub(crate) use crate::{
