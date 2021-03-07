@@ -6,13 +6,13 @@ pub use crate::{
     EdgesMut,
     Graph,
     GraphError,
+    GraphKind,
     Neighbors,
     Node,
     NodeIndex,
+    Reversed,
     Stack,
     VisitMap,
-    Reversed,
-    GraphKind,
 };
 
 pub(crate) use crate::{

@@ -104,6 +104,6 @@ fn main() {
     assert!(gr.edge_count() == 0);
 
     // for (_, edge) in gr.edges().iter() {
-        // assert!(edge.is_disconnected());
+    // assert!(edge.is_disconnected());
     // }
 }
