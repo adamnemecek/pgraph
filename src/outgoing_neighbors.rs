@@ -1,8 +1,8 @@
 use crate::prelude::*;
 
 pub struct OutgoingNeighbors<'a, N, E> {
-    index: NodeIndex<N, E>,
-    inner: &'a Graph<N, E>,
+    // index: NodeIndex<N, E>,
+    // inner: &'a Graph<N, E>,
     // next: Next<N, E>,
     edges: Edges<'a, N, E>,
 }
@@ -10,8 +10,8 @@ pub struct OutgoingNeighbors<'a, N, E> {
 impl<'a, N: std::fmt::Debug, E: std::fmt::Debug> OutgoingNeighbors<'a, N, E> {
     pub fn new(inner: &'a Graph<N, E>, index: NodeIndex<N, E>) -> Self {
         Self {
-            index,
-            inner,
+            // index,
+            // inner,
             // next: inner[index].next,
             edges: inner.outgoing_edges(index)
         }
