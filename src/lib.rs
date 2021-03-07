@@ -17,6 +17,9 @@ pub use error::*;
 mod stack;
 pub use stack::*;
 
+mod neighbors;
+pub use neighbors::*;
+
 mod index;
 pub use index::*;
 

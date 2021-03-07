@@ -10,6 +10,7 @@ pub use crate::{
     NodeIndex,
     Stack,
     VisitMap,
+    Neighbors,
 };
 
 pub(crate) use crate::{

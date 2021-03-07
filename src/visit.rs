@@ -30,7 +30,7 @@ pub struct VisitMap<N> {
     ph: std::marker::PhantomData<N>,
 }
 
-impl<T: std::fmt::Debug> VisitMap<T> {
+impl<T: std::fmt::Debug> VisitMap<TypedIndex<T>> {
     pub fn with_capacity(bits: usize) -> Self {
         Self {
             inner: fixedbitset::FixedBitSet::with_capacity(bits),

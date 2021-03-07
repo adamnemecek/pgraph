@@ -28,6 +28,7 @@ impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
                 return false;
             }
         }
+
         true
     }
 }
@@ -189,6 +190,10 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
     pub fn edges(&self) -> &generational_arena::Arena<Edge<N, E>> {
         &self.edges
+    }
+
+    pub fn neighbors(&self, typed_index: NodeIndex<N,E>) -> Neighbors<N, E> {
+        todo!()
     }
 
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {

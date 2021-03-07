@@ -23,6 +23,11 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Dfs<NodeIndex<N, E>> {
         graph.reset_map(&mut self.discovered);
         self.stack.clear();
     }
+
+    pub fn move_to(&mut self, start: NodeIndex<N,E>) {
+        self.stack.clear();
+        self.stack.push(start);
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -74,48 +79,49 @@ pub fn toposort<N: std::fmt::Debug, E: std::fmt::Debug>(
     with_dfs(g, space, |dfs| {
         dfs.reset(&g);
         let mut finished = g.visit_map();
-        todo!()
-        // let mut finish_stack = Vec::new();
-        // for i in g.node_identifiers() {
-        //     if dfs.discovered.is_visited(&i) {
-        //         continue;
-        //     }
-        //     dfs.stack.push(i);
-        //     while let Some(&nx) = dfs.stack.last() {
-        //         if dfs.discovered.visit(nx) {
-        //             // First time visiting `nx`: Push neighbors, don't pop `nx`
-        //             for succ in g.neighbors(nx) {
-        //                 if succ == nx {
-        //                     // self cycle
-        //                     return Err(GraphError::WouldCycle(nx));
-        //                 }
-        //                 if !dfs.discovered.is_visited(&succ) {
-        //                     dfs.stack.push(succ);
-        //                 }
-        //             }
-        //         } else {
-        //             dfs.stack.pop();
-        //             if finished.visit(nx) {
-        //                 // Second time: All reachable nodes must have been finished
-        //                 finish_stack.push(nx);
-        //             }
-        //         }
-        //     }
-        // }
-        // finish_stack.reverse();
 
-        // dfs.reset(g);
-        // for &i in &finish_stack {
-        //     dfs.move_to(i);
-        //     let mut cycle = false;
-        //     while let Some(j) = dfs.next(Reversed(g)) {
-        //         if cycle {
-        //             return Err(GraphError::WouldCycle(j));
-        //         }
-        //         cycle = true;
-        //     }
-        // }
+        let mut finish_stack = Vec::new();
+        for (i, n) in g.nodes() {
+            let i = i.into();
+            if dfs.discovered.is_visited(i) {
+                continue;
+            }
+            dfs.stack.push(i);
+            while let Some(&nx) = dfs.stack.peek() {
+                if dfs.discovered.visit(nx) {
+                    // First time visiting `nx`: Push neighbors, don't pop `nx`
+                    for succ in g.neighbors(nx) {
+                        if succ == nx {
+                            // self cycle
+                            return Err(GraphError::WouldCycle(nx));
+                        }
+                        if !dfs.discovered.is_visited(succ) {
+                            dfs.stack.push(succ);
+                        }
+                    }
+                } else {
+                    dfs.stack.pop();
+                    if finished.visit(nx) {
+                        // Second time: All reachable nodes must have been finished
+                        finish_stack.push(nx);
+                    }
+                }
+            }
+        }
+        finish_stack.reverse();
+        dfs.reset(g);
 
-        // Ok(finish_stack)
+        for &i in &finish_stack {
+            dfs.move_to(i);
+            let mut cycle = false;
+            // while let Some(j) = dfs.next(Reversed(g)) {
+            //     if cycle {
+            //         return Err(GraphError::WouldCycle(j));
+            //     }
+            //     cycle = true;
+            // }
+        }
+
+        Ok(finish_stack)
     })
 }
