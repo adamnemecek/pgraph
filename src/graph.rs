@@ -206,6 +206,27 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         OutgoingNeighbors::new(self, node)
     }
 
+    pub fn edge_connecting(
+        &self,
+        a: NodeIndex<N, E>,
+        b: NodeIndex<N, E>,
+    ) -> Option<EdgeIndex<N, E>> {
+        let outgoing = self.outgoing_edges(a);
+        for (idx, edge) in outgoing {
+            if edge.to() == b {
+                return Some(idx);
+            }
+        }
+
+        let incoming = self.incoming_edges(a);
+        for (idx, edge) in incoming {
+            if edge.from() == b {
+                return Some(idx);
+            }
+        }
+        None
+    }
+
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
         // println!("remove edge {}", e.debug());
         //
