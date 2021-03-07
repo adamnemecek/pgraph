@@ -21,7 +21,10 @@ fn main() {
     let _ = gr.add_edge(f, g, 9); // 9
     let _ = gr.add_edge(e, g, 10); // 10
 
-    for e in gr.outgoing_neighbors(e) {
+    // for e in gr.outgoing_neighbors(e) {
+    //     println!("{:?}", gr[e].weight);
+    // }
+    for e in gr.incoming_neighbors(e) {
         println!("{:?}", gr[e].weight);
     }
 }
