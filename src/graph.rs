@@ -59,11 +59,19 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     pub fn add_node(&mut self, weight: N) -> NodeIndex<N, E> {
         let node = Node {
             weight,
-            // next: Default::default(),
             next: Default::default(),
         };
 
         self.nodes.typed_insert(node)
+    }
+
+    pub fn add_node_with(&mut self, create: impl FnOnce(NodeIndex<N, E>) -> N) -> NodeIndex<N, E> {
+        self.nodes.typed_insert_with(|index| {
+            Node {
+                weight: create(index),
+                next: Default::default(),
+            }
+        })
     }
 
     pub fn incoming_edges(&self, index: NodeIndex<N, E>) -> Edges<'_, N, E> {
