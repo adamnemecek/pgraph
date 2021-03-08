@@ -258,7 +258,6 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
             //     // Remove all edges from and to this node.
 
-            let mut i = 0;
             loop {
                 let next = self.nodes[n].next;
                 if let Some(outgoing) = next.outgoing {
@@ -272,10 +271,6 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
                             n.debug()
                         )
                     );
-                    // i += 1;
-                    // if outgoing.index() == 8 {
-                    //     break;
-                    // }
                 } else {
                     break;
                 }
