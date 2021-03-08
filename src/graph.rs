@@ -66,11 +66,9 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     }
 
     pub fn add_node_with(&mut self, create: impl FnOnce(NodeIndex<N, E>) -> N) -> NodeIndex<N, E> {
-        self.nodes.typed_insert_with(|index| {
-            Node {
-                weight: create(index),
-                next: Default::default(),
-            }
+        self.nodes.typed_insert_with(|index| Node {
+            weight: create(index),
+            next: Default::default(),
         })
     }
 
