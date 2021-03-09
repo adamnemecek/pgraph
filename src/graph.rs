@@ -212,7 +212,34 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         OutgoingNeighbors::new(self, node)
     }
 
+    #[inline]
     pub fn edge_connecting(
+        &self,
+        a: NodeIndex<N, E>,
+        b: NodeIndex<N, E>,
+    ) -> Option<EdgeIndex<N, E>> {
+        if let Some(idx) = self.incoming_edge_connecting(a, b) {
+            Some(idx)
+        } else {
+            self.outgoing_edge_connecting(a, b)
+        }
+    }
+
+    pub fn incoming_edge_connecting(
+        &self,
+        a: NodeIndex<N, E>,
+        b: NodeIndex<N, E>,
+    ) -> Option<EdgeIndex<N, E>> {
+        let incoming = self.incoming_edges(a);
+        for (idx, edge) in incoming {
+            if edge.from() == b {
+                return Some(idx);
+            }
+        }
+        None
+    }
+
+    pub fn outgoing_edge_connecting(
         &self,
         a: NodeIndex<N, E>,
         b: NodeIndex<N, E>,
@@ -220,13 +247,6 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         let outgoing = self.outgoing_edges(a);
         for (idx, edge) in outgoing {
             if edge.to() == b {
-                return Some(idx);
-            }
-        }
-
-        let incoming = self.incoming_edges(a);
-        for (idx, edge) in incoming {
-            if edge.from() == b {
                 return Some(idx);
             }
         }

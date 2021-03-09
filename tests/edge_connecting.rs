@@ -1,6 +1,7 @@
 use pgraph::prelude::*;
 
-fn main() {
+#[test]
+fn test_edge_connecting() {
     let mut gr = Graph::new();
     let a = gr.add_node("A"); // 0
     let b = gr.add_node("B"); // 1
@@ -34,6 +35,6 @@ fn main() {
     assert!(gr.edge_connecting(f, g) == Some(fg));
     assert!(gr.edge_connecting(e, g) == Some(eg));
 
-    assert!(gr.outgoing_edge_connecting(b, a).unwrap() == ab);
-    // assert!(gr.outgoing_edge_connecting(a, b) == ab);
+    assert!(gr.outgoing_edge_connecting(a, b).unwrap() == ab);
+    assert!(gr.incoming_edge_connecting(b, a).unwrap() == ab);
 }
