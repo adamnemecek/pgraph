@@ -20,27 +20,36 @@ pub struct Siblings<'a, N> {
 // }
 
 impl<'a, N: std::fmt::Debug> Iterator for Siblings<'a, N> {
-    type Item = &'a TreeNode<N>;
+    // type Item = &'a TreeNode<N>;
+    type Item = TreeNodeIndex<N>;
     fn next(&mut self) -> Option<Self::Item> {
+        todo!()
         // let current = &self.tree.idx(self.current);
-        if let Some(current) = self.current {
-            let ret = &self.tree[current];
-            Some(ret)
-        } else {
-            None
-        }
+        // if let Some(current) = self.current {
+        //     let ret = &self.tree[current];
+        //     Some(ret)
+        // } else {
+        //     None
+        // }
     }
 }
 
 pub struct Children<'a, N> {
-    current: TreeNodeIndex<N>,
+    current: Option<TreeNodeIndex<N>>,
     tree: &'a Tree<N>,
 }
 
-impl<'a, N> Iterator for Children<'a, N> {
-    type Item = N;
+impl<'a, N: std::fmt::Debug> Iterator for Children<'a, N> {
+    type Item = TreeNodeIndex<N>;
+
     fn next(&mut self) -> Option<Self::Item> {
-        todo!()
+        if let Some(idx) = self.current {
+            let current = self.tree[idx].sibling;
+            self.current = current;
+            current
+        } else {
+            None
+        }
     }
 }
 
@@ -108,9 +117,9 @@ impl<N: std::fmt::Debug> Tree<N> {
     }
 
     pub fn children(&self, node: TreeNodeIndex<N>) -> Children<'_, N> {
-        let current = &self[node].first_child;
+        let current = self[node].first_child;
         Children {
-            current: node,
+            current,
             tree: self,
         }
     }
