@@ -44,9 +44,8 @@ impl<'a, N: std::fmt::Debug> Iterator for Children<'a, N> {
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(idx) = self.current {
-            let current = self.tree[idx].sibling;
-            self.current = current;
-            current
+            self.current = self.tree[idx].sibling;
+            Some(idx)
         } else {
             None
         }
