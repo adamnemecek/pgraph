@@ -17,3 +17,18 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> std::fmt::Debug for Node<N, E> {
         write!(f, "}}\n")
     }
 }
+
+// impl<N, E> std::ops::Deref for Node<N, E> {
+//     type Target = N;
+//     #[inline]
+//     fn deref(&self) -> &Self::Target {
+//         &self.weight
+//     }
+// }
+
+// impl<N, E> std::ops::DerefMut for Node<N, E> {
+//     #[inline]
+//     fn deref_mut(&mut self) -> &mut Self::Target {
+//         &mut self.weight
+//     }
+// }

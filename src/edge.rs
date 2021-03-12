@@ -60,3 +60,18 @@ impl<N, E> std::ops::Index<Direction> for Edge<N, E> {
 //         }
 //     }
 // }
+
+// impl<N, E> std::ops::Deref for Edge<N, E> {
+//     type Target = E;
+//     #[inline]
+//     fn deref(&self) -> &Self::Target {
+//         &self.weight
+//     }
+// }
+
+// impl<N, E> std::ops::DerefMut for Edge<N, E> {
+//     #[inline]
+//     fn deref_mut(&mut self) -> &mut Self::Target {
+//         &mut self.weight
+//     }
+// }
