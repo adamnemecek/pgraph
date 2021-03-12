@@ -50,6 +50,9 @@ pub use visit::*;
 mod reversed;
 pub use reversed::*;
 
+mod tree;
+pub use tree::*;
+
 pub mod prelude;
 
 // Index into the NodeIndex and EdgeIndex arrays
