@@ -1,5 +1,6 @@
 pub struct TreeNode<N> {
     pub weight: N,
+    pub depth: usize,
     // this is analogous to incoming
     parent: Option<TreeNodeIndex<N>>,
     sibling: Option<TreeNodeIndex<N>>,
@@ -24,10 +25,9 @@ impl<'a, N: std::fmt::Debug> Iterator for Siblings<'a, N> {
     type Item = TreeNodeIndex<N>;
     fn next(&mut self) -> Option<Self::Item> {
         todo!()
-        // let current = &self.tree.idx(self.current);
-        // if let Some(current) = self.current {
-        //     let ret = &self.tree[current];
-        //     Some(ret)
+        // if let Some(idx) = self.current {
+        //     self.current = self.tree[idx].sibling;
+        //     Some(idx)
         // } else {
         //     None
         // }
@@ -80,12 +80,14 @@ impl<N: std::fmt::Debug> Tree<N> {
         if let Some(p) = parent {
             let parent_node = &self[p];
             let first_child = parent_node.first_child;
+            let depth = parent_node.depth;
 
             let node = TreeNode {
                 weight,
                 parent: Some(p),
                 sibling: first_child,
                 first_child: None,
+                depth: depth + 1,
             };
             let idx = self.nodes.typed_insert(node);
             let parent_node = &mut self[p];
@@ -107,6 +109,7 @@ impl<N: std::fmt::Debug> Tree<N> {
                 parent: None,
                 sibling: None,
                 first_child: None,
+                depth: 0,
             };
             let idx = self.nodes.typed_insert(node);
             self.root = Some(idx);
@@ -134,7 +137,17 @@ impl<N: std::fmt::Debug> Tree<N> {
         }
     }
 
+    pub fn reparent(&mut self) {}
+
     pub fn remove_node(&mut self, index: TreeNodeIndex<N>) {
+        if Some(index) == self.root {
+            //
+            
+        } else {
+            let node = &self[index];
+            // let parent = &self[node.]
+            // remove the node from the sibling list and from the
+        }
         todo!()
     }
 
