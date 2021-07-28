@@ -1,7 +1,8 @@
 use crate::prelude::*;
+use generational_arena::TypedArena;
 
 pub struct EdgesMut<'a, N: 'a, E: 'a> {
-    edges: &'a mut generational_arena::Arena<Edge<N, E>>,
+    edges: &'a mut TypedArena<Edge<N, E>>,
     next: Next<N, E>,
     direction: Direction,
 }
@@ -10,7 +11,7 @@ impl<'a, N: 'a, E: 'a> EdgesMut<'a, N, E> {
     pub(crate) fn new(
         direction: Direction,
         next: Next<N, E>,
-        edges: &'a mut generational_arena::Arena<Edge<N, E>>,
+        edges: &'a mut TypedArena<Edge<N, E>>,
     ) -> Self {
         Self {
             direction,

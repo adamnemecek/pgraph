@@ -80,7 +80,7 @@ pub fn toposort<N: std::fmt::Debug, E: std::fmt::Debug>(
         let mut finished = g.visit_map();
 
         let mut finish_stack = Vec::new();
-        for (i, n) in g.nodes() {
+        for (i, n) in g.nodes().iter() {
             let i = i.into();
             if dfs.discovered.is_visited(i) {
                 continue;

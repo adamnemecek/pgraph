@@ -1,10 +1,11 @@
 use crate::prelude::*;
+use generational_arena::TypedArena;
 
 // #[derive(Debug)]
 #[derive(Clone)]
 pub struct Graph<N, E> {
-    nodes: generational_arena::Arena<Node<N, E>>,
-    edges: generational_arena::Arena<Edge<N, E>>,
+    nodes: TypedArena<Node<N, E>>,
+    edges: TypedArena<Edge<N, E>>,
 }
 
 impl<N: PartialEq, E: PartialEq> PartialEq for Graph<N, E> {
@@ -51,8 +52,8 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
 
     pub fn with_capacity(node_len: usize, edge_len: usize) -> Self {
         Self {
-            nodes: generational_arena::Arena::with_capacity(node_len),
-            edges: generational_arena::Arena::with_capacity(edge_len),
+            nodes: TypedArena::with_capacity(node_len),
+            edges: TypedArena::with_capacity(edge_len),
         }
     }
 
@@ -62,11 +63,11 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             next: Default::default(),
         };
 
-        self.nodes.typed_insert(node)
+        self.nodes.insert(node)
     }
 
     pub fn add_node_with(&mut self, create: impl FnOnce(NodeIndex<N, E>) -> N) -> NodeIndex<N, E> {
-        self.nodes.typed_insert_with(|index| Node {
+        self.nodes.insert_with(|index| Node {
             weight: create(index),
             next: Default::default(),
         })
@@ -134,7 +135,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             },
         };
 
-        let edge_index = self.edges.typed_insert(edge);
+        let edge_index = self.edges.insert(edge);
 
         let mut an = &mut self[a];
         an.next.outgoing = Some(edge_index);
@@ -196,11 +197,11 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         // );
     }
 
-    pub fn nodes(&self) -> &generational_arena::Arena<Node<N, E>> {
+    pub fn nodes(&self) -> &TypedArena<Node<N, E>> {
         &self.nodes
     }
 
-    pub fn edges(&self) -> &generational_arena::Arena<Edge<N, E>> {
+    pub fn edges(&self) -> &TypedArena<Edge<N, E>> {
         &self.edges
     }
 
@@ -256,7 +257,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     pub fn remove_edge(&mut self, e: EdgeIndex<N, E>) -> Option<E> {
         // println!("remove edge {}", e.debug());
         //
-        let t = if let Some(edge) = self.edges.typed_get(e) {
+        let t = if let Some(edge) = self.edges.get(e) {
             Some((edge.from(), edge.to(), edge.next))
         } else {
             None
@@ -270,14 +271,14 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             self.replace_edge_links_of_node(from, e, next.outgoing, Direction::Outgoing);
             self.replace_edge_links_of_node(to, e, next.incoming, Direction::Incoming);
 
-            Some(self.edges.typed_remove(e).unwrap().weight)
+            Some(self.edges.remove(e).unwrap().weight)
         } else {
             None
         }
     }
 
     pub fn remove_node(&mut self, n: NodeIndex<N, E>) -> Option<N> {
-        if let Some(_) = self.nodes.typed_get(n) {
+        if let Some(_) = self.nodes.get(n) {
             // self.nodes.get(a.index())?;
             // for d in &DIRECTIONS {
             //     let k = d.index();
@@ -354,7 +355,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
             //     }
             // }
             // Some(node.weight)
-            let node = self.nodes.typed_remove(n).unwrap();
+            let node = self.nodes.remove(n).unwrap();
             Some(node.weight)
         } else {
             None
@@ -362,7 +363,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
     }
 
     pub fn get(&mut self, index: NodeIndex<N, E>) -> Option<&Node<N, E>> {
-        self.nodes.typed_get(index)
+        self.nodes.get(index)
     }
 
     pub fn clear(&mut self) {

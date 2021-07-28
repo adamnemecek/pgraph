@@ -1,3 +1,5 @@
+use generational_arena::TypedArena;
+
 pub struct TreeNode<N> {
     pub weight: N,
     depth: usize,
@@ -60,7 +62,7 @@ impl<'a, N: std::fmt::Debug> Iterator for Children<'a, N> {
 
 pub struct Tree<N> {
     root: Option<TreeNodeIndex<N>>,
-    nodes: generational_arena::Arena<TreeNode<N>>,
+    nodes: TypedArena<TreeNode<N>>,
 }
 
 impl<N: std::fmt::Debug> Tree<N> {
@@ -95,7 +97,7 @@ impl<N: std::fmt::Debug> Tree<N> {
                 first_child: None,
                 depth: depth + 1,
             };
-            let idx = self.nodes.typed_insert(node);
+            let idx = self.nodes.insert(node);
             let parent_node = &mut self[p];
             parent_node.first_child = Some(idx);
             idx
@@ -109,7 +111,7 @@ impl<N: std::fmt::Debug> Tree<N> {
             //     sibling: None,
             //     first_child: None,
             // };
-            // self.nodes.typed_insert(node);
+            // self.nodes.insert(node);
 
             let node = TreeNode {
                 weight,
@@ -118,7 +120,7 @@ impl<N: std::fmt::Debug> Tree<N> {
                 first_child: None,
                 depth: 0,
             };
-            let idx = self.nodes.typed_insert(node);
+            let idx = self.nodes.insert(node);
             self.root = Some(idx);
             idx
         }
@@ -171,7 +173,7 @@ impl<N: std::fmt::Debug> Tree<N> {
                     self.remove_node(child);
                 }
             }
-            self.nodes.typed_remove(index);
+            self.nodes.remove(index);
             // let parent = &self[node.]
             // remove the node from the sibling list and from the
         }
