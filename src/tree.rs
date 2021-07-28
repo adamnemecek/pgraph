@@ -1,10 +1,16 @@
 pub struct TreeNode<N> {
     pub weight: N,
-    pub depth: usize,
+    depth: usize,
     // this is analogous to incoming
     parent: Option<TreeNodeIndex<N>>,
     sibling: Option<TreeNodeIndex<N>>,
     first_child: Option<TreeNodeIndex<N>>,
+}
+
+impl<N> TreeNode<N> {
+    pub fn depth(&self) -> usize {
+        self.depth
+    }
 }
 
 pub type TreeNodeIndex<N> = generational_arena::TypedIndex<TreeNode<N>>;
@@ -96,6 +102,7 @@ impl<N: std::fmt::Debug> Tree<N> {
         } else {
             // todo!()
             assert!(self.root.is_none());
+            assert!(self.nodes.is_empty());
             // let node = TreeNode {
             //     weight,
             //     parent,
@@ -137,14 +144,34 @@ impl<N: std::fmt::Debug> Tree<N> {
         }
     }
 
-    pub fn reparent(&mut self) {}
+    pub fn reparent(&mut self) {
+        //
+    }
+
+    fn replace_next_of_node(
+        &mut self,
+        node: TreeNodeIndex<N>,
+        replace: TreeNodeIndex<N>,
+        with: TreeNodeIndex<N>,
+    ) {
+        let next = &self.nodes[node];
+    }
 
     pub fn remove_node(&mut self, index: TreeNodeIndex<N>) {
         if Some(index) == self.root {
             //
-            
+            todo!();
         } else {
             let node = &self[index];
+
+            loop {
+                let node = &self[index];
+                if let Some(child) = node.first_child {
+                    //
+                    self.remove_node(child);
+                }
+            }
+            self.nodes.typed_remove(index);
             // let parent = &self[node.]
             // remove the node from the sibling list and from the
         }

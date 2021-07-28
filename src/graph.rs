@@ -143,7 +143,7 @@ impl<N: std::fmt::Debug, E: std::fmt::Debug> Graph<N, E> {
         bn.next.incoming = Some(edge_index);
         Ok(edge_index)
     }
-
+    /// replace the `replace` node of `node` with `with`
     fn replace_edge_links_of_node(
         &mut self,
         node: NodeIndex<N, E>,
