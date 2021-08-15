@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use generational_arena::TypedArena;
+use generational_arena::prelude::TypedArena;
 
 // #[derive(Debug)]
 #[derive(Clone)]

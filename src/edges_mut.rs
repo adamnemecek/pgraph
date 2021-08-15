@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use generational_arena::TypedArena;
+use generational_arena::prelude::TypedArena;
 
 pub struct EdgesMut<'a, N: 'a, E: 'a> {
     edges: &'a mut TypedArena<Edge<N, E>>,

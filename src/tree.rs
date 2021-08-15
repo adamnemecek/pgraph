@@ -1,4 +1,4 @@
-use generational_arena::TypedArena;
+use generational_arena::prelude::TypedArena;
 
 pub struct TreeNode<N> {
     pub weight: N,
